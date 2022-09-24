@@ -1,2 +1,8 @@
 # Bountiful_Budgeting
-Sample README
+
+#### Names
+
+- Juan Alcaraz
+- Landon Moon
+- Jeremiah Richard
+- Parker Steach
