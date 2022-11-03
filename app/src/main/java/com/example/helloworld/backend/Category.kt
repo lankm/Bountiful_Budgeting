@@ -17,6 +17,10 @@ open class Category {
         this.name = "Uncategorized"
     }
 
+    fun edit(n:String, cat:ArrayList<Category>, income:Double) {
+
+    }
+
     fun addExpense(e:Expense) {
         expenses.add(e)
     }
@@ -24,10 +28,10 @@ open class Category {
         expenses.remove(e)
     }
 
-
-    fun edit(n:String, cat:ArrayList<Category>, income:Double) {
-
+    override fun toString() : String {
+        return name
     }
+
 
 
 

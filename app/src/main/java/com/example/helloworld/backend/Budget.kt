@@ -1,7 +1,8 @@
 package com.example.helloworld.backend
 
-import java.io.File
-import java.util.concurrent.ArrayBlockingQueue
+import java.io.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Budget {
@@ -13,7 +14,7 @@ class Budget {
 
 
 
-    constructor(name: String, income: Double, startDay: Int) {
+    constructor(name: String, income: Double) {
         this.income = income
         this.name = name
 
@@ -22,12 +23,51 @@ class Budget {
         this.categories.add(uncategorized);
     }
 
-    constructor(fileName: String) {
-        //todo: make a file structure
-        //todo
-    }
-    fun saveBudget(fileName: String) {
+    //don't know where files are supposed to be
+    constructor(filePath: String, fileName: String) {
+        try {
+            val sc: Scanner = Scanner(File("$filePath/$fileName"))
+            sc.useDelimiter("\\s,")
 
+            name = sc.next()
+            income = sc.nextDouble()
+
+            val cats: Int = sc.nextInt()
+            for (i in 0..cats) {
+                val c: Category = Category(sc.next(), sc.nextDouble())
+
+                val exps: Int = sc.nextInt()
+                for (i in 0..exps) {
+                    val e: Expense = Expense(sc.next(), sc.nextDouble(), c)
+                    c.addExpense(e)
+                }
+                addCategory(c)
+            }
+            sc.close()
+
+
+        } catch(e: IOException) {
+            e.printStackTrace()
+        }
+    }
+    fun saveBudget(filePath: String, fileName: String) {
+        try {
+            val out = PrintStream("$filePath/$fileName")
+
+            out.printf("%s,%f\n", name, income)
+            out.printf("%d\n", categories.size)
+
+            for (c in categories) {
+                out.printf("%s,%f\n", c.name, c.cap)
+                out.printf("%d\n", categories.size)
+
+                for (e in c.expenses) {
+                    out.printf("%s,%f\n", e.name, e.cost)
+                }
+            }
+        } catch(e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     // add/remove categories
@@ -35,7 +75,7 @@ class Budget {
         categories.add(c)
     }
     fun removeCategory(c:Category) {
-        categories.add(c)
+        categories.remove(c)
     }
 
     // add/remove expenses
@@ -49,8 +89,9 @@ class Budget {
 
 
 
-
-
+    override fun toString() : String {
+        return name
+    }
 
     // aka static
     companion object {
