@@ -21,8 +21,12 @@ open class Category {
         e.category = this
         expenses.add(e)
     }
-    fun revert(e:Expense) {
-        expenses.remove(e)
+    fun removeExpense(e:Expense) {
+        try {
+            expenses.remove(e)
+        } catch(e: Exception) {
+
+        }
     }
 
     override fun toString() : String {

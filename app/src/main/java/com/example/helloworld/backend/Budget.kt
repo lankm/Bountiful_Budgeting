@@ -18,8 +18,11 @@ class Budget {
         this.total = 0.0
 
         // every budget has uncategorized
-        val uncategorized: Category = Category()
+        val uncategorized = Category()
         this.categories.add(uncategorized)
+    }
+    constructor(path: File, name: String) {
+        //todo
     }
 
     // add/remove categories
@@ -43,7 +46,11 @@ class Budget {
         categories[index].addExpense(e)
     }
     fun removeExpense(e:Expense) {
-        e.category.revert(e)
+        try {
+            e.category.removeExpense(e)
+        } catch (e: Exception) {
+
+        }
     }
 
     // toString methods
@@ -76,13 +83,13 @@ class Budget {
     // aka static
     companion object {
         fun sample(): Budget {
-            var bud: Budget = Budget("Sample", 2400.0)
+            val bud = Budget("Sample", 2400.0)
 
-            var cat1: Category = Category("Living Expenses", 700.0)
+            val cat1 = Category("Living Expenses", 700.0)
             bud.addCategory(cat1)
             cat1.addExpense(Expense("Rent",675.0))
 
-            var cat2: Category = Category("Food", 200.0)
+            val cat2 = Category("Food", 200.0)
             bud.addCategory(cat2)
             cat2.addExpense(Expense("Walmart",85.43))
             cat2.addExpense(Expense("Taco Bell",15.12))

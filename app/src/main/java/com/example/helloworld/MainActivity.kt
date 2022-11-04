@@ -16,9 +16,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var context = applicationContext
+        var f = context.filesDir
+
         val b: Budget = Budget.sample()
         val e = Expense("Power", 20.2)
-        b.addExpense(e, 0)
+        b.removeExpense(e)
 
 
         binding.textView.text = b.showAll()
