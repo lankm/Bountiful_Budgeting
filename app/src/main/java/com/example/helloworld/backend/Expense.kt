@@ -6,23 +6,16 @@ open class Expense {
     // variables
     var name:String = ""
     var cost:Double = -1.0
-    var category:Category = Category()
+    lateinit var category:Category
 
     // constructors
-    constructor(name: String, cost:Double, category: Category) {
+    constructor(name: String, cost: Double) {
         this.name = name
         this.cost = cost
-        this.category = category
-    }
-    constructor(cost:Double, category: Category) {
-        this.name = "Expense"
-        this.cost = cost
-        this.category = category
     }
     constructor(cost:Double) {
         this.name = "Expense"
         this.cost = cost
-        this.category = Category()
     }
     constructor(fileLine: String) {
         //todo
@@ -38,6 +31,8 @@ open class Expense {
         this.cost = cost
     }
 
-
+    override fun toString() : String {
+        return "$name: $$cost"
+    }
 
 }

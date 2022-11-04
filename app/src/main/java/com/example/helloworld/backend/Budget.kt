@@ -1,7 +1,6 @@
 package com.example.helloworld.backend
 
 import java.io.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -13,72 +12,33 @@ class Budget {
     var total: Double = -1.0
 
 
-
     constructor(name: String, income: Double) {
         this.income = income
         this.name = name
+        this.total = 0.0
 
         // every budget has uncategorized
         val uncategorized: Category = Category()
-        this.categories.add(uncategorized);
-    }
-
-    //don't know where files are supposed to be
-    constructor(filePath: String, fileName: String) {
-        try {
-            val sc: Scanner = Scanner(File("$filePath/$fileName"))
-            sc.useDelimiter("\\s,")
-
-            name = sc.next()
-            income = sc.nextDouble()
-
-            val cats: Int = sc.nextInt()
-            for (i in 0..cats) {
-                val c: Category = Category(sc.next(), sc.nextDouble())
-
-                val exps: Int = sc.nextInt()
-                for (i in 0..exps) {
-                    val e: Expense = Expense(sc.next(), sc.nextDouble(), c)
-                    c.addExpense(e)
-                }
-                addCategory(c)
-            }
-            sc.close()
-
-
-        } catch(e: IOException) {
-            e.printStackTrace()
-        }
-    }
-    fun saveBudget(filePath: String, fileName: String) {
-        try {
-            val out = PrintStream("$filePath/$fileName")
-
-            out.printf("%s,%f\n", name, income)
-            out.printf("%d\n", categories.size)
-
-            for (c in categories) {
-                out.printf("%s,%f\n", c.name, c.cap)
-                out.printf("%d\n", categories.size)
-
-                for (e in c.expenses) {
-                    out.printf("%s,%f\n", e.name, e.cost)
-                }
-            }
-        } catch(e: IOException) {
-            e.printStackTrace()
-        }
+        this.categories.add(uncategorized)
     }
 
     // add/remove categories
     fun addCategory(c:Category) {
+        // adding the category
         categories.add(c)
+
+        // sorting categories by the size of categories
+        categories = ArrayList(categories.sortedWith(compareBy { -it.cap }))
     }
     fun removeCategory(c:Category) {
         categories.remove(c)
     }
 
     // add/remove expenses
+    fun addExpense(e:Expense) {
+        // adding to uncategorized
+        categories[categories.size-1].addExpense(e)
+    }
     fun addExpense(e:Expense, index: Int) {
         categories[index].addExpense(e)
     }
@@ -86,27 +46,48 @@ class Budget {
         e.category.revert(e)
     }
 
+    // toString methods
+    fun showAll(): String {
+        var str: String = this.toString()
 
+        for(c in categories) {
+            str += "\n  $c"
 
+            for(e in c.expenses) {
+                str += "\n    $e"
+            }
+        }
 
-    override fun toString() : String {
-        return name
+        return str
+    }
+    fun showCategories(): String {
+        var str: String = this.toString()
+
+        for(c in categories) {
+            str += "\n  $c"
+        }
+
+        return str
+    }
+    override fun toString(): String {
+        return "$name $$income"
     }
 
     // aka static
     companion object {
-        fun availableBudgets(): ArrayList<String> {
-            var names: ArrayList<String> = ArrayList()
+        fun sample(): Budget {
+            var bud: Budget = Budget("Sample", 2400.0)
 
-            File("com.example.helloworld.backend.budgets").walk().forEach {
-                names.add(it.toString())
-            }
+            var cat1: Category = Category("Living Expenses", 700.0)
+            bud.addCategory(cat1)
+            cat1.addExpense(Expense("Rent",675.0))
 
-            return names
-        }
+            var cat2: Category = Category("Food", 200.0)
+            bud.addCategory(cat2)
+            cat2.addExpense(Expense("Walmart",85.43))
+            cat2.addExpense(Expense("Taco Bell",15.12))
 
-        fun deleteBudget(fileName: String) {
-            File(fileName).delete()
+            return bud
         }
     }
 }

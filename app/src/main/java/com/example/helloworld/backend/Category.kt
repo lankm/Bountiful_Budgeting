@@ -17,11 +17,8 @@ open class Category {
         this.name = "Uncategorized"
     }
 
-    fun edit(n:String, cat:ArrayList<Category>, income:Double) {
-
-    }
-
     fun addExpense(e:Expense) {
+        e.category = this
         expenses.add(e)
     }
     fun revert(e:Expense) {
@@ -29,7 +26,10 @@ open class Category {
     }
 
     override fun toString() : String {
-        return name
+        if(cap == -1.0)
+            return "$name: ____"
+        else
+            return "$name: $$cap"
     }
 
 
