@@ -9,17 +9,14 @@ class Budget {
     var income: Double = -1.0
 
     var categories = ArrayList<Category>()
-    var total: Double = -1.0
-
 
     constructor(name: String, income: Double) {
         this.income = income
         this.name = name
-        this.total = 0.0
 
         // every budget has uncategorized
         val uncategorized = Category()
-        this.categories.add(uncategorized)
+        addCategory(uncategorized)
     }
     constructor(path: File, name: String) {
         //todo
@@ -29,6 +26,7 @@ class Budget {
     fun addCategory(c: Category) {
         // adding the category
         categories.add(c)
+        c.bud = this
 
         // sorting categories by the size of categories
         categories = ArrayList(categories.sortedWith(compareBy { -it.cap }))
@@ -39,30 +37,42 @@ class Budget {
 
     // add/remove expenses
     fun addExpense(e: Expense) {
-        // adding to uncategorized
         addExpense(e, categories.size-1)
     }
     fun addExpense(e: Expense, index: Int) {
+        // linking
         categories[index].addExpense(e)
-
-        total += e.cost
     }
     fun removeExpense(e: Expense) {
         try {
+            // removing from array
             e.category.removeExpense(e)
-            total -= e.cost
         } catch (e: Exception) {}
     }
+
+    // utility
+    fun total(): Double {
+        var total = 0.0
+
+        for(c in categories) {
+            for(e in c.expenses) {
+                total+=e.cost
+            }
+        }
+
+        return total
+    }
+
 
     // toString methods
     fun showAll(): String {
         var str: String = this.toString()
 
         for(c in categories) {
-            str += "\n  $c"
+            str += "\n   $c"
 
             for(e in c.expenses) {
-                str += "\n    $e"
+                str += "\n      $e"
             }
         }
 
@@ -78,22 +88,26 @@ class Budget {
         return str
     }
     override fun toString(): String {
-        return "$name $$income"
+        return "$name $"  + String.format("%.2f", income) + ", $" + String.format("%.2f", total())
     }
 
     // aka static
     companion object {
         fun sample(): Budget {
-            val bud = Budget("Sample", 2400.0)
+            val bud = Budget("Sample Budget", 2400.00)
 
-            val cat1 = Category("Living Expenses", 700.0)
+            val cat1 = Category("Living Expenses", 700.00)
             bud.addCategory(cat1)
-            cat1.addExpense(Expense("Rent",675.0))
+            cat1.addExpense(Expense("Rent",675.00))
 
-            val cat2 = Category("Food", 200.0)
+            val cat2 = Category("Food", 200.00)
             bud.addCategory(cat2)
             cat2.addExpense(Expense("Walmart",85.43))
             cat2.addExpense(Expense("Taco Bell",15.12))
+            cat2.addExpense(Expense("Snack",2.50))
+
+            bud.addExpense(Expense("Gift",25.00))
+            bud.addExpense(Expense(19.23))
 
             return bud
         }

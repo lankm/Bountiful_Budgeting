@@ -6,6 +6,7 @@ open class Expense {
     // variables
     var name:String = ""
     var cost:Double = -1.0
+
     lateinit var category: Category
 
     // constructors
@@ -28,15 +29,18 @@ open class Expense {
         this.category = category
     }
     fun edit(cost:Double) {
-        this.cost = cost
+        edit(name, cost, category)
     }
 
+    // debug/toString
     override fun toString() : String {
-        return "$name: $$cost"
+        return "$name: $" + String.format("%.2f", cost)
     }
 
     // aka static
     companion object {
-
+        fun sample(): Expense {
+            return Expense("Mail", 1.25)
+        }
     }
 }
