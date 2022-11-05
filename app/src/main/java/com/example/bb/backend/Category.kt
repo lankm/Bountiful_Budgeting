@@ -1,6 +1,5 @@
-package com.example.helloworld.backend
+package com.example.bb.backend
 
-import java.util.*
 import kotlin.collections.ArrayList
 
 open class Category {
@@ -19,11 +18,11 @@ open class Category {
     }
 
     // adding/removing
-    fun addExpense(e:Expense) {
+    fun addExpense(e: Expense) {
         e.category = this
         expenses.add(e)
     }
-    fun removeExpense(e:Expense) {
+    fun removeExpense(e: Expense) {
         try {
             expenses.remove(e)
         } catch(e: Exception) {}

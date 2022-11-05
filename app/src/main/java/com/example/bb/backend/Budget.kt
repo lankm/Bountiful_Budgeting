@@ -1,6 +1,5 @@
-package com.example.helloworld.backend
+package com.example.bb.backend
 
-import android.util.Log
 import java.io.*
 import kotlin.collections.ArrayList
 
@@ -27,28 +26,28 @@ class Budget {
     }
 
     // add/remove categories
-    fun addCategory(c:Category) {
+    fun addCategory(c: Category) {
         // adding the category
         categories.add(c)
 
         // sorting categories by the size of categories
         categories = ArrayList(categories.sortedWith(compareBy { -it.cap }))
     }
-    fun removeCategory(c:Category) {
+    fun removeCategory(c: Category) {
         categories.remove(c)
     }
 
     // add/remove expenses
-    fun addExpense(e:Expense) {
+    fun addExpense(e: Expense) {
         // adding to uncategorized
         addExpense(e, categories.size-1)
     }
-    fun addExpense(e:Expense, index: Int) {
+    fun addExpense(e: Expense, index: Int) {
         categories[index].addExpense(e)
 
         total += e.cost
     }
-    fun removeExpense(e:Expense) {
+    fun removeExpense(e: Expense) {
         try {
             e.category.removeExpense(e)
             total -= e.cost

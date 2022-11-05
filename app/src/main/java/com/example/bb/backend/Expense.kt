@@ -1,12 +1,12 @@
-package com.example.helloworld.backend
+package com.example.bb.backend
 
-import android.text.TextUtils
+import com.example.bb.backend.Category
 
 open class Expense {
     // variables
     var name:String = ""
     var cost:Double = -1.0
-    lateinit var category:Category
+    lateinit var category: Category
 
     // constructors
     constructor(name: String, cost: Double) {

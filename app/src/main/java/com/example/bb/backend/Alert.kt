@@ -1,4 +1,4 @@
-package com.example.helloworld.backend
+package com.example.bb.backend
 
 class Alert {
 }
