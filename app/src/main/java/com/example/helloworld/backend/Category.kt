@@ -9,6 +9,7 @@ open class Category {
     var expenses = ArrayList<Expense>()
     //var subs = ArrayList<Expense>()
 
+    //constructors
     constructor(name: String, cap: Double) {
         this.name = name
         this.cap = cap
@@ -17,6 +18,7 @@ open class Category {
         this.name = "Uncategorized"
     }
 
+    // adding/removing
     fun addExpense(e:Expense) {
         e.category = this
         expenses.add(e)
@@ -24,11 +26,10 @@ open class Category {
     fun removeExpense(e:Expense) {
         try {
             expenses.remove(e)
-        } catch(e: Exception) {
-
-        }
+        } catch(e: Exception) {}
     }
 
+    // debug/toString
     override fun toString() : String {
         if(cap == -1.0)
             return "$name: ____"
@@ -36,9 +37,8 @@ open class Category {
             return "$name: $$cap"
     }
 
+    // aka static
+    companion object {
 
-
-
-
-
+    }
 }

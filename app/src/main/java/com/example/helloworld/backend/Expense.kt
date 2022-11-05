@@ -35,4 +35,8 @@ open class Expense {
         return "$name: $$cost"
     }
 
+    // aka static
+    companion object {
+
+    }
 }

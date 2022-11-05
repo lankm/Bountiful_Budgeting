@@ -16,15 +16,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var context = applicationContext
-        var f = context.filesDir
+        var u: User = User("Landon", "password")
 
-        val b: Budget = Budget.sample()
-        val e = Expense("Power", 20.2)
-        b.removeExpense(e)
+        var b: Budget = Budget("Personal", 2700.0)
+        var c: Category = Category("Living Expenses", 12.12)
+        var e: Expense = Expense("Rent", 12.12)
+
+        b.addCategory(c)
+        b.addExpense(e, 0)
+        b.addExpense(e)
+
+        u.addBudget(b)
 
 
-        binding.textView.text = b.showAll()
+        binding.textView.text = u.showBudgets()
 
     }
 }

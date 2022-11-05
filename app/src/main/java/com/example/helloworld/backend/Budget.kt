@@ -1,5 +1,6 @@
 package com.example.helloworld.backend
 
+import android.util.Log
 import java.io.*
 import kotlin.collections.ArrayList
 
@@ -40,17 +41,18 @@ class Budget {
     // add/remove expenses
     fun addExpense(e:Expense) {
         // adding to uncategorized
-        categories[categories.size-1].addExpense(e)
+        addExpense(e, categories.size-1)
     }
     fun addExpense(e:Expense, index: Int) {
         categories[index].addExpense(e)
+
+        total += e.cost
     }
     fun removeExpense(e:Expense) {
         try {
             e.category.removeExpense(e)
-        } catch (e: Exception) {
-
-        }
+            total -= e.cost
+        } catch (e: Exception) {}
     }
 
     // toString methods
