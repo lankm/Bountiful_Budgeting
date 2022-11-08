@@ -24,9 +24,10 @@ class MainActivity : ComponentActivity() {
                     var b = Budget.sample() //showAll()
                     var c = Category.sample() //showAll()
                     var e = Expense.sample() // just toString()
+                    var f = User.sample()
 
-
-                    Greeting(b.toString())
+                    //Greeting(f.makeReport(b)) //displays report
+                    //Greeting(b.showAll())
                 }
             }
         }
