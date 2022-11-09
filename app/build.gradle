@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.bb'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.bb"
@@ -60,4 +60,5 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
-}
+    //noinspection GradleDependency
+    implementation"androidx.compose.material:material-icons-extended:1.3.0"}

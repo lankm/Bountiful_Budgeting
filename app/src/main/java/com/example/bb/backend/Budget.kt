@@ -95,7 +95,6 @@ class Budget {
     companion object {
         fun sample(): Budget {
             val bud = Budget("Sample Budget", 2400.00)
-
             val cat1 = Category("Living Expenses", 700.00)
             bud.addCategory(cat1)
             cat1.addExpense(Expense("Rent",675.00))
