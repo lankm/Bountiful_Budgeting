@@ -28,6 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bb.backend.*
+import com.example.bb.frontend.BottomNavigationBar
+import com.example.bb.frontend.MainScreen
+import com.example.bb.frontend.NavigationItem
 import com.example.bb.ui.theme.BountifulBudgetingTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -39,19 +42,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BountifulBudgetingTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-
-                    var b = Budget.sample() //showAll()
-                    var c = Category.sample() //showAll()
-                    var e = Expense.sample() // just toString()
-                    var f = User.sample()
-
-                    //Greeting(f.makeReport(b)) //displays report
-                    //Greeting(b.showAll())
-                }
-            }
+            MainScreen()
         }
     }
 }
