@@ -21,7 +21,10 @@ import com.example.bb.R
 @Preview
 @Composable
 fun ReportScreen() {
-    //look into makinga "top of app bar"
+    //look into making "top of app bar"
+    // Landon: this can be done in the navigation class.
+    // I can implement it but accessing from ReportScreen might be difficult.
+
     /*
     Scaffold(){
         topBar = { TopAppBar(title = { Text("QQQ | Report Menu",
