@@ -2,6 +2,7 @@ package com.example.bb.frontend
 
 import android.graphics.Color
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
@@ -32,5 +33,25 @@ fun ReportScreen() {
             textAlign = TextAlign.Center,
             fontSize = 25.sp
         )
+
+        ButtonTest()
     }
+
+   /* Column(
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+
+    )Button(onClick = {
+        //your onclick code here
+    }) {
+        Text(text = "Click ")
+        Text(text = "Here")
+    }
+*/
+}
+
+@Composable
+fun ButtonTest() {
+    Button(onClick = {    }) { Text(text = "Click ") }
 }
