@@ -9,6 +9,7 @@ class Budget {
     var income: Double = -1.0
 
     var categories = ArrayList<Category>()
+    var reports = ArrayList<Report>()
 
     constructor(name: String, income: Double) {
         this.income = income
@@ -111,4 +112,30 @@ class Budget {
             return bud
         }
     }
+
+    //only use this one on the report page, for the dropdown menu
+    fun toString(a:Int): String{
+        return name
+    }
+
+    //generate report
+    fun makeReport(b: Budget){
+        reports.add(Report(b))
+
+        //var str: String
+        var str = "\nBudget:"
+        str += "\n\t\tIncome: ${reports[reports.lastIndex].budgetAmount}"
+        str += "\n\t\tSpent: ${reports[reports.lastIndex].budgetSpent}\n"
+        //TODO: look into while loop change
+        var i = 0
+        while(i < reports[0].numOfCategories){
+            str += "\n${reports[0].categoryName[i]}:"
+            str += "\n\t\tCategory limit: ${reports[reports.lastIndex].categoryLimit[i]}"
+            str += "\n\t\tCategory spent: ${reports[reports.lastIndex].categorySpent[i++]}\n"
+        }
+        reports[reports.lastIndex].reportInfo = str
+        //testing to make sure reportInfo is correct
+        println(reports[reports.lastIndex].reportInfo)
+    }
+
 }

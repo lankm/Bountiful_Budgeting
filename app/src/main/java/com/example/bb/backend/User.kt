@@ -6,7 +6,9 @@ class User {
     var password = "" // its cool to be unsecure
     var logged_in = false
     var budgets = ArrayList<Budget>()
-    var reports = ArrayList<Report>()
+
+    //currently moved to Budget class, might get moved back
+    //var reports = ArrayList<Report>()
 
     // constructors
     constructor(name: String, password: String) {
@@ -52,22 +54,28 @@ class User {
     }
 
     //generate report
-    fun makeReport(b: Budget): String{
+    //for now this is being moved to budget class
+    //might get moved back later
+    /*
+    fun makeReport(b: Budget){
         reports.add(Report(b))
 
         var str: String = this.toString()
-        //TODO: figure out how to report for the most recent report, instead of using static arrays
         str = "\nBudget:"
-        str += "\n\t\tIncome: ${reports[0].budgetAmount}"
-        str += "\n\t\tSpent: ${reports[0].budgetSpent}\n"
+        str += "\n\t\tIncome: ${reports[reports.lastIndex].budgetAmount}"
+        str += "\n\t\tSpent: ${reports[reports.lastIndex].budgetSpent}\n"
         //TODO: look into while loop change
+        //not sure if this is a necessary change
         var i = 0
         while(i < reports[0].numOfCategories){
             str += "\n${reports[0].categoryName[i]}:"
-            str += "\n\t\tCategory limit: ${reports[0].categoryLimit[i]}"
-            str += "\n\t\tCategory spent: ${reports[0].categorySpent[i++]}\n"
+            str += "\n\t\tCategory limit: ${reports[reports.lastIndex].categoryLimit[i]}"
+            str += "\n\t\tCategory spent: ${reports[reports.lastIndex].categorySpent[i++]}\n"
         }
-
-        return str
+        reports[reports.lastIndex].reportInfo = str
+        //testing to make sure reportInfo is correct
+        println(reports[reports.lastIndex].reportInfo)
     }
+    */
+
 }

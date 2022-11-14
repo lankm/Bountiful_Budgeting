@@ -13,6 +13,7 @@ class Report {
     var categoryLimit = ArrayList<Double>()
     var categorySpent = ArrayList<Double>()
     var numOfCategories = 0
+    var reportInfo: String = "testing"
 
     constructor(budget: Budget){
         //this.date =       //get the time
