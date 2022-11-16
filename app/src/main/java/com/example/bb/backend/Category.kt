@@ -21,7 +21,7 @@ open class Category {
     }
 
     // adding/removing
-    fun addExpense(e: Expense) {
+    fun addExpense(e: Expense){
         // links the expense to this category
         e.category = this
 
@@ -43,6 +43,15 @@ open class Category {
 
         return total
     }
+    fun alertNeeded(AS: AlertSetting) : Boolean {
+        return total()/cap >= (1-AS.categoryPercent)
+    }
+    fun reset() {   //resets a category to the beginning of the month
+        expenses = ArrayList<Expense>()
+    }
+    fun percent() : Double{
+        return (total()/cap) * 100
+    }
 
     // debug/toString
     fun showAll() : String {
@@ -56,9 +65,9 @@ open class Category {
     }
     override fun toString() : String {
         if(cap == -1.0)
-            return "$name: ____" + ", $" + String.format("%.2f", total())
+            return String.format("%s  ", name) + String.format("$%.2f", total())
         else
-            return "$name: $" + String.format("%.2f", cap) + ", $" + String.format("%.2f", total())
+            return String.format("%s  ", name) + String.format("%.2f%%", percent())
     }
 
     // aka static

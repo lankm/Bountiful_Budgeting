@@ -71,7 +71,3 @@ class User {
         return str
     }
 }
-
-
-
-
