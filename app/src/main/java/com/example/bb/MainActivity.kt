@@ -38,11 +38,13 @@ import java.time.format.FormatStyle
 import java.util.*
 import kotlin.math.exp
 
-class MainActivity : ComponentActivity() {
+open class MainActivity : ComponentActivity() {
+    var user: User = User.sample()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            MainScreen(user)
         }
     }
 }

@@ -1,3 +1,4 @@
+
 package com.example.bb.frontend
 
 import android.graphics.Color
@@ -34,15 +35,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.bb.backend.*
 import androidx.compose.ui.window.PopupProperties
+import com.example.bb.MainActivity
 import com.example.bb.R
 
 
-@Preview
 @Composable
-fun ReportScreen() {
-
+fun ReportScreen(u: User) {
     //remove this once we can grab the users data from anywhere
-    val u = User.sample()
     var text:String by remember { mutableStateOf("Select a budget to generate a report")}
     //holds the currently selected budget
     val testBudgetArray = ArrayList<Budget>(1)
@@ -60,8 +59,8 @@ fun ReportScreen() {
             fontWeight = FontWeight.Bold,
             color = androidx.compose.ui.graphics.Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
+            textAlign = TextAlign.Start,
+            fontSize = 20.sp
         )
 
         //dropdown menu
@@ -75,11 +74,11 @@ fun ReportScreen() {
             else {
                 //generate report and save to text
                 //consider changing return value of 'make report' to a string, so you can combine these lines
-                testBudgetArray[0].makeReport(testBudgetArray[0])
-                text = testBudgetArray[0].reports[u.budgets[0].reports.lastIndex].reportInfo
+                //testBudgetArray[0].generateReport()
+                text = testBudgetArray[0].reports[u.budgets[0].reports.lastIndex].print()
             }
         }){
-            Text("Generate Report")
+            Text("Show Last Report")
         }
 
     }
@@ -88,7 +87,7 @@ fun ReportScreen() {
 //dropdown menu
 @Composable
 fun BudgetSpinner (budgets: List<Budget>, selectedBudget: ArrayList<Budget>) {
-    var budgetText by remember {mutableStateOf("Select Report")}
+    var budgetText by remember {mutableStateOf("Select Budget")}
     var expanded by remember { mutableStateOf(false)}
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Row(Modifier
@@ -111,14 +110,13 @@ fun BudgetSpinner (budgets: List<Budget>, selectedBudget: ArrayList<Budget>) {
                     if(selectedBudget.isNotEmpty()) {
                         selectedBudget.clear()
                     }
-                    budgetText = budget.toString(1)
+                    budgetText = budget.name
                     selectedBudget.add(budget)
                 }) {
-                    Text(text = budget.toString(1))
+                    Text(text = budget.name)
                 }
                 }
             }
         }
     }
 }
-

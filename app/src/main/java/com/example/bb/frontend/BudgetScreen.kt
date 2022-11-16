@@ -18,10 +18,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.bb.IncomeComponent
 import com.example.bb.R
+import com.example.bb.backend.User
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
 @Composable
-fun BudgetScreen() {
-    IncomeComponent()
+fun BudgetScreen(u: User) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        Text(
+            text = "Budget",
+            fontWeight = FontWeight.Bold,
+            color = androidx.compose.ui.graphics.Color.White,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp
+        )
+    }
 }

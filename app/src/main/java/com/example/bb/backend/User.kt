@@ -6,6 +6,7 @@ class User {
     var password = "" // its cool to be unsecure
     var logged_in = false
     var budgets = ArrayList<Budget>()
+    var AlertSetting = AlertSetting()
 
     //currently moved to Budget class, might get moved back
     //var reports = ArrayList<Report>()
@@ -52,30 +53,4 @@ class User {
             return u
         }
     }
-
-    //generate report
-    //for now this is being moved to budget class
-    //might get moved back later
-    /*
-    fun makeReport(b: Budget){
-        reports.add(Report(b))
-
-        var str: String = this.toString()
-        str = "\nBudget:"
-        str += "\n\t\tIncome: ${reports[reports.lastIndex].budgetAmount}"
-        str += "\n\t\tSpent: ${reports[reports.lastIndex].budgetSpent}\n"
-        //TODO: look into while loop change
-        //not sure if this is a necessary change
-        var i = 0
-        while(i < reports[0].numOfCategories){
-            str += "\n${reports[0].categoryName[i]}:"
-            str += "\n\t\tCategory limit: ${reports[reports.lastIndex].categoryLimit[i]}"
-            str += "\n\t\tCategory spent: ${reports[reports.lastIndex].categorySpent[i++]}\n"
-        }
-        reports[reports.lastIndex].reportInfo = str
-        //testing to make sure reportInfo is correct
-        println(reports[reports.lastIndex].reportInfo)
-    }
-    */
-
 }

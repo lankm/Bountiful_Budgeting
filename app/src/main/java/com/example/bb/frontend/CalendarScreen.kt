@@ -15,10 +15,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.bb.R
+import com.example.bb.backend.User
 
-@Preview
 @Composable
-fun CalendarScreen() {
+fun CalendarScreen(u: User) {
     Column(
         modifier = Modifier
             .fillMaxSize()

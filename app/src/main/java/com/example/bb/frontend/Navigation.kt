@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bb.R
+import com.example.bb.backend.User
 
 sealed class NavigationItem(var route: String, var icon : ImageVector, var title: String) {
     object Budget : NavigationItem("budget", Icons.Rounded.LineStyle, "Budget")
@@ -76,7 +77,7 @@ fun BottomNavigationBar(navController: NavController) {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(u: User) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -84,27 +85,27 @@ fun MainScreen() {
         bottomBar = { BottomNavigationBar(navController) },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
             Box(modifier = Modifier.padding(padding)) {
-                Navigation(navController)
+                Navigation(navController, u)
             }
         },
-        backgroundColor = Color(180,180,180) // Set background color to avoid the white flashing when you switch between screens
+        backgroundColor = Color(50,100,50) // Set background color to avoid the white flashing when you switch between screens
     )
 }
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, u: User) {
     NavHost(navController, startDestination = NavigationItem.Budget.route) {
         composable(NavigationItem.Budget.route) {
-            BudgetScreen()
+            BudgetScreen(u)
         }
         composable(NavigationItem.Calendar.route) {
-            CalendarScreen()
+            CalendarScreen(u)
         }
         composable(NavigationItem.Report.route) {
-            ReportScreen()
+            ReportScreen(u)
         }
         composable(NavigationItem.Settings.route) {
-            SettingScreen()
+            SettingScreen(u)
         }
     }
 }

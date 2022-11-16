@@ -1,14 +1,18 @@
 package com.example.bb.backend
 
+import com.example.bb.Categories
 import java.io.*
+import java.util.concurrent.Flow.Subscription
 import kotlin.collections.ArrayList
 
 
-class Budget {
+open class Budget {
     var name: String = ""
     var income: Double = -1.0
 
     var categories = ArrayList<Category>()
+    var Subs = ArrayList<Expense>()
+
     var reports = ArrayList<Report>()
 
     constructor(name: String, income: Double) {
@@ -19,8 +23,21 @@ class Budget {
         val uncategorized = Category()
         addCategory(uncategorized)
     }
-    constructor(path: File, name: String) {
-        //todo
+    constructor(b: Budget) {
+        this.name = b.name
+        this.income = b.income
+
+        //copying data over
+        for (c in b.categories) {
+            var nc = Category(c.name, c.cap)
+
+            for (e in c.expenses) {
+                nc.addExpense(Expense(e.name, e.cost))
+            }
+
+            addCategory(nc)
+        }
+
     }
 
     // add/remove categories
@@ -50,20 +67,38 @@ class Budget {
             e.category.removeExpense(e)
         } catch (e: Exception) {}
     }
+    fun addReport(r: Report) {
+        reports.add(r)
+    }
 
     // utility
     fun total(): Double {
         var total = 0.0
 
         for(c in categories) {
-            for(e in c.expenses) {
-                total+=e.cost
-            }
+            total+=c.total()
         }
 
         return total
     }
+    fun alertNeeded(AS: AlertSetting) : Boolean {
+        return total()/income >= (1-AS.budgetPercent)
+    }
+    fun generateReport() : Report {
+        var r = Report(this)
 
+        reports.add(r)
+
+        return r
+    }
+    fun reset() {   // usually done after generating a report
+        for(c in categories) {
+            c.reset()
+        }
+    }
+    fun percent() : Double{
+        return (total()/income) * 100
+    }
 
     // toString methods
     fun showAll(): String {
@@ -89,7 +124,7 @@ class Budget {
         return str
     }
     override fun toString(): String {
-        return "$name $"  + String.format("%.2f", income) + ", $" + String.format("%.2f", total())
+        return String.format("%s", name) + String.format("%8.2f%%", percent())
     }
 
     // aka static
@@ -109,33 +144,10 @@ class Budget {
             bud.addExpense(Expense("Gift",25.00))
             bud.addExpense(Expense(19.23))
 
+            // adding a single report
+            bud.generateReport()
+
             return bud
         }
     }
-
-    //only use this one on the report page, for the dropdown menu
-    fun toString(a:Int): String{
-        return name
-    }
-
-    //generate report
-    fun makeReport(b: Budget){
-        reports.add(Report(b))
-
-        //var str: String
-        var str = "\nBudget:"
-        str += "\n\t\tIncome: ${reports[reports.lastIndex].budgetAmount}"
-        str += "\n\t\tSpent: ${reports[reports.lastIndex].budgetSpent}\n"
-        //TODO: look into while loop change
-        var i = 0
-        while(i < reports[0].numOfCategories){
-            str += "\n${reports[0].categoryName[i]}:"
-            str += "\n\t\tCategory limit: ${reports[reports.lastIndex].categoryLimit[i]}"
-            str += "\n\t\tCategory spent: ${reports[reports.lastIndex].categorySpent[i++]}\n"
-        }
-        reports[reports.lastIndex].reportInfo = str
-        //testing to make sure reportInfo is correct
-        println(reports[reports.lastIndex].reportInfo)
-    }
-
 }
