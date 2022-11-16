@@ -43,8 +43,11 @@ import com.example.bb.R
 fun ReportScreen(u: User) {
     //remove this once we can grab the users data from anywhere
     var text:String by remember { mutableStateOf("Select a budget to generate a report")}
+    var reportText:String by remember{ mutableStateOf("")}
     //holds the currently selected budget
     val testBudgetArray = ArrayList<Budget>(1)
+    val testReportArray = ArrayList<Report>(1)
+    var showReport:Boolean by remember { mutableStateOf(false)}
 
     val scrollState = rememberScrollState()
     Column(
@@ -76,14 +79,89 @@ fun ReportScreen(u: User) {
                 //consider changing return value of 'make report' to a string, so you can combine these lines
                 //testBudgetArray[0].generateReport()
                 text = testBudgetArray[0].reports[u.budgets[0].reports.lastIndex].print()
+                showReport = true
             }
         }){
             Text("Show Last Report")
         }
 
+        //dropdown for displaying old reports
+        if(showReport) {
+            ReportSpinner(u.budgets[0].reports, testReportArray, true)
+            Button(onClick = {
+                if(testReportArray.isEmpty()){
+                    reportText = "No Report selected"
+                }
+                else {
+                    //generate report and save to text
+                    //consider changing return value of 'make report' to a string, so you can combine these lines
+                    //testBudgetArray[0].generateReport()
+                    reportText = testReportArray[0].print()
+                    showReport = true
+                }
+            }){
+                Text("Show Selected Report")
+            }
+            Text(
+                text = reportText,
+                fontWeight = FontWeight.Bold,
+                color = androidx.compose.ui.graphics.Color.White,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                textAlign = TextAlign.Start,
+                fontSize = 20.sp
+            )
+        }
     }
+    /*
+    Row(
+        Modifier.fillMaxSize()
+    ){
+        Card() {
+            ReportSpinner(testBudgetArray[0].reports, testReportArray, true)
+        }
+    }
+    */
+
 }
 
+
+@Composable
+fun ReportSpinner (reports: List<Report>, selectedReport: ArrayList<Report>, enable: Boolean) {
+    var reportText by remember {mutableStateOf("Select Report")}
+    var expanded by remember { mutableStateOf(false)}
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Row(
+            Modifier
+                .padding(24.dp)
+                .clickable {
+                    expanded = !expanded
+                }
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+
+        ) {
+            Text(text = reportText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
+            DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
+                reports.forEach {
+                        report: Report -> DropdownMenuItem(onClick = {
+                    expanded = false
+
+                    //if selectedReport has a budget in it, drop it
+                    if(selectedReport.isNotEmpty()) {
+                        selectedReport.clear()
+                    }
+                    reportText = report.date.toString()
+                    selectedReport.add(report)
+                }) {
+                    Text(text = report.date.toString())
+                }
+                }
+            }
+        }
+    }
+}
 //dropdown menu
 @Composable
 fun BudgetSpinner (budgets: List<Budget>, selectedBudget: ArrayList<Budget>) {
@@ -110,6 +188,7 @@ fun BudgetSpinner (budgets: List<Budget>, selectedBudget: ArrayList<Budget>) {
                     if(selectedBudget.isNotEmpty()) {
                         selectedBudget.clear()
                     }
+
                     budgetText = budget.name
                     selectedBudget.add(budget)
                 }) {
