@@ -65,9 +65,9 @@ open class Category {
     }
     override fun toString() : String {
         if(cap == -1.0)
-            return String.format("%s", name) + String.format("$%8.2f", total())
+            return String.format("%s  ", name) + String.format("$%.2f", total())
         else
-            return String.format("%s", name) + String.format("%8.2f%%", percent())
+            return String.format("%s  ", name) + String.format("%.2f%%", percent())
     }
 
     // aka static
