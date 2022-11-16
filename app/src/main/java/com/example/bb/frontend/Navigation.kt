@@ -27,11 +27,13 @@ import com.example.bb.frontend.Settings.AlertScreen
 import com.example.bb.frontend.Settings.SettingScreen
 
 sealed class NavigationItem(var route: String, var icon : ImageVector, var title: String) {
+    // four main pages
     object Budget : NavigationItem("budget", Icons.Rounded.LineStyle, "Budget")
     object Calendar : NavigationItem("calendar", Icons.Rounded.CalendarMonth , "Calendar")
     object Report : NavigationItem("reports", Icons.Rounded.AddChart, "Reports")
     object Settings : NavigationItem("setting", Icons.Rounded.Settings, "Settings")
 
+    // any other subpages
     object AlertSettings : NavigationItem("alert", Icons.Rounded.Settings, "Alert")
 }
 
@@ -100,6 +102,7 @@ fun MainScreen(u: User) {
 @Composable
 fun Navigation(navController: NavHostController, u: User) {
     NavHost(navController, startDestination = NavigationItem.Budget.route) {
+        // These are the 4 main pages
         composable(NavigationItem.Budget.route) {
             BudgetScreen(u)
         }
@@ -113,6 +116,7 @@ fun Navigation(navController: NavHostController, u: User) {
             SettingScreen(u)
         }
 
+        // These are any other pages that we create
         composable(NavigationItem.AlertSettings.route) {
             AlertScreen(u)
         }
