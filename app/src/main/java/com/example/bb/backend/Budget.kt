@@ -2,6 +2,7 @@ package com.example.bb.backend
 
 import com.example.bb.Categories
 import java.io.*
+import java.util.*
 import java.util.concurrent.Flow.Subscription
 import kotlin.collections.ArrayList
 
@@ -99,6 +100,18 @@ open class Budget {
     fun percent() : Double{
         return (total()/income) * 100
     }
+    fun getExpenses() : List<Expense> {
+        var exp = ArrayList<Expense>()
+
+        for (c in categories) {
+            for (e in c.expenses) {
+                exp.add(e)
+            }
+        }
+        exp.sort()
+
+        return exp.reversed()
+    }
 
     // toString methods
     fun showAll(): String {
@@ -111,6 +124,7 @@ open class Budget {
                 str += "\n      $e"
             }
         }
+
 
         return str
     }
@@ -133,16 +147,16 @@ open class Budget {
             val bud = Budget("Sample Budget", 2400.00)
             val cat1 = Category("Living Expenses", 700.00)
             bud.addCategory(cat1)
-            cat1.addExpense(Expense("Rent",675.00))
+            cat1.addExpense(Expense("Rent",675.00, Date(122, 9,12)))
 
             val cat2 = Category("Food", 200.00)
             bud.addCategory(cat2)
-            cat2.addExpense(Expense("Walmart",85.43))
-            cat2.addExpense(Expense("Taco Bell",15.12))
-            cat2.addExpense(Expense("Snack",2.50))
+            cat2.addExpense(Expense("Walmart",85.43, Date(122, 9,20)))
+            cat2.addExpense(Expense("Taco Bell",15.12, Date(122, 9,10)))
+            cat2.addExpense(Expense("Snack",2.50, Date(122, 9,15)))
 
-            bud.addExpense(Expense("Gift",25.00))
-            bud.addExpense(Expense(19.23))
+            bud.addExpense(Expense("Gift",25.00, Date(122, 9,13)))
+            bud.addExpense(Expense(19.23, Date(122, 9,12)))
 
             // adding a single report
             bud.generateReport()

@@ -21,7 +21,13 @@ import com.example.bb.frontend.navController
 @Composable
 fun AlertScreen(u: User) {
     Column() {
+        var budAlrt by remember { mutableStateOf(TextFieldValue("")) }
+        var carAlrt by remember { mutableStateOf(TextFieldValue("")) }
+
         Button(onClick = {
+
+
+
             navController.navigate("setting")
         },
             modifier = Modifier
@@ -32,23 +38,22 @@ fun AlertScreen(u: User) {
                 contentColor = Color.Black
             )
         ){
-            Text("Back")
+            Text("Save & Exit")
         }
+
         Text("Overall Budget Alert")
-        var text1 by remember { mutableStateOf(TextFieldValue("")) }
         TextField(
-            value = text1,
+            value = budAlrt,
             onValueChange = { newText ->
-                text1 = newText
+                budAlrt = newText
             }
         )
 
         Text("Categorical Alert")
-        var text2 by remember { mutableStateOf(TextFieldValue("")) }
         TextField(
-            value = text2,
+            value = budAlrt,
             onValueChange = { newText ->
-                text2 = newText
+                budAlrt = newText
             }
         )
     }
