@@ -23,12 +23,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bb.R
 import com.example.bb.backend.User
+import com.example.bb.frontend.Settings.AlertScreen
+import com.example.bb.frontend.Settings.SettingScreen
 
 sealed class NavigationItem(var route: String, var icon : ImageVector, var title: String) {
     object Budget : NavigationItem("budget", Icons.Rounded.LineStyle, "Budget")
     object Calendar : NavigationItem("calendar", Icons.Rounded.CalendarMonth , "Calendar")
     object Report : NavigationItem("reports", Icons.Rounded.AddChart, "Reports")
     object Settings : NavigationItem("setting", Icons.Rounded.Settings, "Settings")
+
+    object AlertSettings : NavigationItem("alert", Icons.Rounded.Settings, "Alert")
 }
 
 @Composable
@@ -76,9 +80,10 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
+lateinit var navController: NavHostController
 @Composable
 fun MainScreen(u: User) {
-    val navController = rememberNavController()
+    navController = rememberNavController()
 
     Scaffold(
         // top bar
@@ -106,6 +111,10 @@ fun Navigation(navController: NavHostController, u: User) {
         }
         composable(NavigationItem.Settings.route) {
             SettingScreen(u)
+        }
+
+        composable(NavigationItem.AlertSettings.route) {
+            AlertScreen(u)
         }
     }
 }
