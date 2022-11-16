@@ -55,7 +55,6 @@ fun getOptions(): List<Option> {
     var options = ArrayList<Option>()
 
     options.add(Option("Alert Settings", 0))
-    options.add(Option("Log Out", 1)) // not used currently
 
 
     //add more if needed here.
@@ -77,36 +76,21 @@ class Option {
     companion object {
         @Composable
         fun displayButton(name: String, i: Int, u: User) {
-            if(i == 0) {
-                Button(onClick = {
-                    navController.navigate("alert")
+            Button( onClick = {
+                    if(i == 0)
+                        navController.navigate("alert")
+                    else if(i == 1){}
                 },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = White,
-                        contentColor = Black
-                    )
-                ){
-                    Text(name)
-                }
-            } else if(i == 1) {
-                Button(onClick = {
-                    //log off implementation
-                },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Gray,
-                        contentColor = Black
-                    )
-                ){
-                    Text(name)
-                }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = White,
+                    contentColor = Black
+                )
+            ){
+                Text(name)
             }
         }
     }
