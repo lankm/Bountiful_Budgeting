@@ -55,8 +55,6 @@ fun getOptions(): List<Option> {
     var options = ArrayList<Option>()
 
     options.add(Option("Alert Settings", 0))
-
-
     //add more if needed here.
     //make sure i is defined in the companion object
 
