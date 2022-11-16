@@ -21,7 +21,18 @@ import com.example.bb.IncomeComponent
 import com.example.bb.R
 import com.example.bb.backend.User
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BudgetScreen(u: User) {
+fun BudgetScreen() {
     IncomeComponent()
+
+
 }
+
+
+@Composable
+fun CardBudget(u: User){
+
+}
+
+

@@ -28,9 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bb.backend.*
-import com.example.bb.frontend.BottomNavigationBar
 import com.example.bb.frontend.MainScreen
-import com.example.bb.frontend.NavigationItem
 import com.example.bb.ui.theme.BountifulBudgetingTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,13 +36,15 @@ import java.time.format.FormatStyle
 import java.util.*
 import kotlin.math.exp
 
-open class MainActivity : ComponentActivity() {
-    var user: User = User.sample()
-
+class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        var u = User.sample()
+
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen(user)
+            MainScreen(u)
+            IncomeComponent()
         }
     }
 }
