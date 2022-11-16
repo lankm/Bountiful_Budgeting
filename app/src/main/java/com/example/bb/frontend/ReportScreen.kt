@@ -112,15 +112,6 @@ fun ReportScreen(u: User) {
             )
         }
     }
-    /*
-    Row(
-        Modifier.fillMaxSize()
-    ){
-        Card() {
-            ReportSpinner(testBudgetArray[0].reports, testReportArray, true)
-        }
-    }
-    */
 
 }
 
