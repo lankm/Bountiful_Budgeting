@@ -63,4 +63,11 @@ fun LoginScreen() {
     ) {
         Text("Log In")
     }
+
+    //add a spinner to select a user. show by name of user
+    //add a textfield to enter password
+    //   if correct log in
+    // make it look good enough
+    // add a dummy button for new user
+    //   it won't do anything
 }
