@@ -1,10 +1,7 @@
 package com.example.bb.frontend.Settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,12 +18,14 @@ import com.example.bb.frontend.navController
 @Composable
 fun AlertScreen(u: User) {
     Column() {
-        var budAlrt by remember { mutableStateOf(TextFieldValue("")) }
-        var carAlrt by remember { mutableStateOf(TextFieldValue("")) }
+        var budAlrt by remember { mutableStateOf(TextFieldValue(u.AlertSetting.budgetPercent.toString())) }
+        var carAlrt by remember { mutableStateOf(TextFieldValue(u.AlertSetting.categoryPercent.toString())) }
 
         Button(onClick = {
-
-
+            try {
+                u.AlertSetting.budgetPercent = budAlrt.text.toDouble()
+                u.AlertSetting.categoryPercent = carAlrt.text.toDouble()
+            } catch (e: java.lang.Exception) {}
 
             navController.navigate("setting")
         },
@@ -41,20 +40,34 @@ fun AlertScreen(u: User) {
             Text("Save & Exit")
         }
 
-        Text("Overall Budget Alert")
+        Text("Overall Budget Alert",
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 0.dp)
+                .height(20.dp),
+            fontWeight = FontWeight.Bold,
+            color = Color.White)
         TextField(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
             value = budAlrt,
             onValueChange = { newText ->
                 budAlrt = newText
-            }
+            },
+            colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, backgroundColor = Color.White)
         )
 
-        Text("Categorical Alert")
+        Text("Categorical Alert",
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 0.dp)
+                .height(20.dp),
+            fontWeight = FontWeight.Bold,
+            color = Color.White)
         TextField(
-            value = budAlrt,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
+            value = carAlrt,
             onValueChange = { newText ->
-                budAlrt = newText
-            }
+                carAlrt = newText
+            },
+            colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, backgroundColor = Color.White)
         )
     }
 

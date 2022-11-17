@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MainScreen(u)
-            IncomeComponent()
         }
     }
 }

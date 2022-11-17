@@ -31,7 +31,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bb.R
 import com.example.bb.backend.User
-import com.example.bb.frontend.Settings.AddEditScreen
+//import com.example.bb.frontend.Settings.AddEditScreen
 import com.example.bb.frontend.Settings.AlertScreen
 import com.example.bb.frontend.Settings.SettingScreen
 
@@ -161,9 +161,10 @@ fun Navigation(navController: NavHostController, u: User) {
         }
 
         // ADD - EDIT BUDGET
-        composable(NavigationItem.AlertSettings.route) {
-            AddEditScreen(u)
-        }
+        //AddEditScreen doesn't exist
+        //composable(NavigationItem.AlertSettings.route) {
+        //    AddEditScreen(u)
+        //}
 
 
     }
