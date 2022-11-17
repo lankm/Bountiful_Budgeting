@@ -25,23 +25,27 @@ sealed class NavigationLogin(var route: String, var title: String) {
 }
 
 lateinit var navLogin: NavHostController
+var currentUser = User.sample() // this should be changed in LoginScreen
 
+// just navigates between being logged in or not
 @Composable
 fun Login() {
     navLogin = rememberNavController()
 
-    var u = User.sample()
+    //start as logged out
     NavHost(navLogin, startDestination = NavigationLogin.LoginPage.route) {
         // These are the 4 main pages
         composable(NavigationLogin.LoginPage.route) {
             LoginScreen()
         }
         composable(NavigationLogin.MainPage.route) {
-            MainScreen(u)
+            MainScreen(currentUser)
         }
     }
 }
 
+
+//This is the login page. Change this to actually do stuff
 @Composable
 fun LoginScreen() {
     Button(
