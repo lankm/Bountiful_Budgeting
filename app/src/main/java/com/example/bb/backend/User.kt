@@ -45,12 +45,37 @@ class User {
     // aka static
     companion object {
         fun sample(): User {
-            val u = User("Michael Siok", "password")
+            val u = User("Landon Moon", "password")
             val b = Budget.sample()
 
             u.addBudget(b)
 
             return u
+        }
+
+        fun users() : List<User>{
+            var users = ArrayList<User>()
+
+            users.add(sample())
+
+            //adding an additional user
+            var u = User("Parker Steach", "password")
+            var b = Budget.sample()
+            u.addBudget(b)
+            users.add(u)
+
+            u = User("Jeremiah Richard", "password")
+            b = Budget.sample()
+            u.addBudget(b)
+            users.add(u)
+
+            u = User("Juan Alcaraz", "password")
+            b = Budget.sample()
+            u.addBudget(b)
+            users.add(u)
+
+
+            return users
         }
     }
 }

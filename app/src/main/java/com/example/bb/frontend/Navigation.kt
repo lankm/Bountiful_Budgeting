@@ -92,6 +92,7 @@ fun BottomNavigationBar(navController: NavController) {
 }
 
 lateinit var navController: NavHostController
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(u: User) {
     navController = rememberNavController()
@@ -135,12 +136,13 @@ fun MainScreen(u: User) {
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController, u: User) {
     NavHost(navController, startDestination = NavigationItem.Budget.route) {
         // These are the 4 main pages
         composable(NavigationItem.Budget.route) {
-            //BudgetScreen()
+            BudgetScreen()
         }
         composable(NavigationItem.Calendar.route) {
             CalendarScreen(u)
