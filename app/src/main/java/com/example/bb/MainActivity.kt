@@ -28,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bb.backend.*
+import com.example.bb.frontend.Login
+import com.example.bb.frontend.LoginScreen
 import com.example.bb.frontend.MainScreen
 import com.example.bb.ui.theme.BountifulBudgetingTheme
 import java.time.LocalDateTime
@@ -39,11 +41,9 @@ import kotlin.math.exp
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        var u = User.sample()
-
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen(u)
+            Login()
         }
     }
 }

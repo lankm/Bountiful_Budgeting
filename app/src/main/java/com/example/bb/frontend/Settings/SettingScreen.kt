@@ -38,6 +38,7 @@ import com.example.bb.backend.Expense
 import com.example.bb.backend.User
 import com.example.bb.frontend.NavigationItem
 import com.example.bb.frontend.navController
+import com.example.bb.frontend.navLogin
 
 @Composable
 fun SettingScreen(u: User) {
@@ -58,6 +59,20 @@ fun SettingScreen(u: User) {
             )
         ){
             Text("Alert Settings")
+        }
+        Button( onClick = {
+            navLogin.navigate("login")
+        },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = White,
+                contentColor = Black
+            )
+        ){
+            Text("Log Out")
         }
     }
 }

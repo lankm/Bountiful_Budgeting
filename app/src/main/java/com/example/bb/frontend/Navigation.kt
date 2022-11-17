@@ -124,9 +124,6 @@ fun MainScreen(u: User) {
                 
                 
             }
-            
-            
-            
         }},
         bottomBar = { BottomNavigationBar(navController) },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
