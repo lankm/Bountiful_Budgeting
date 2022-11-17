@@ -1,19 +1,27 @@
 package com.example.bb.frontend
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
@@ -23,6 +31,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bb.R
 import com.example.bb.backend.User
+//import com.example.bb.frontend.Settings.AddEditScreen
 import com.example.bb.frontend.Settings.AlertScreen
 import com.example.bb.frontend.Settings.SettingScreen
 
@@ -86,7 +95,34 @@ fun MainScreen(u: User) {
     navController = rememberNavController()
 
     Scaffold(
-        // top bar
+        topBar = { TopAppBar(
+            backgroundColor = Color(0,140,0),
+            contentColor = Color.White)
+        {
+            
+            Row() {
+                Text(
+                    text = "Bountiful Budgeting",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                
+                Spacer(modifier = Modifier.width(16.dp))
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Search Task",
+                        tint = Color.Black
+                    )
+                }
+                
+                //(imageVector = Icons.Filled.Add , contentDescription = "Add String")
+                
+                
+            }
+        }},
         bottomBar = { BottomNavigationBar(navController) },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
             Box(modifier = Modifier.padding(padding)) {
@@ -101,7 +137,7 @@ fun MainScreen(u: User) {
 fun Navigation(navController: NavHostController, u: User) {
     NavHost(navController, startDestination = NavigationItem.Budget.route) {
         composable(NavigationItem.Budget.route) {
-            BudgetScreen(u)
+            //BudgetScreen()
         }
         composable(NavigationItem.Calendar.route) {
             CalendarScreen(u)
@@ -116,5 +152,13 @@ fun Navigation(navController: NavHostController, u: User) {
         composable(NavigationItem.AlertSettings.route) {
             AlertScreen(u)
         }
+
+        // ADD - EDIT BUDGET
+        //AddEditScreen doesn't exist
+        //composable(NavigationItem.AlertSettings.route) {
+        //    AddEditScreen(u)
+        //}
+
+
     }
 }

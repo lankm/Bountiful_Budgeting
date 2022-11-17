@@ -28,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bb.backend.*
-import com.example.bb.frontend.BottomNavigationBar
+import com.example.bb.frontend.Login
+import com.example.bb.frontend.LoginScreen
 import com.example.bb.frontend.MainScreen
-import com.example.bb.frontend.NavigationItem
 import com.example.bb.ui.theme.BountifulBudgetingTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,11 +38,20 @@ import java.time.format.FormatStyle
 import java.util.*
 import kotlin.math.exp
 
+// don't change MainActivity.
+/* If you change something it should be in:
+ * -BudgetScreen,
+ * -CalendarScreen,
+ * -topbar section of Navigation,
+ * -or polishing up the ReportScreen
+ * Everything else works properly and looks 'good enough'
+ */
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            Login()
         }
     }
 }

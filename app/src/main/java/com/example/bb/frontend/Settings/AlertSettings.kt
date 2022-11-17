@@ -1,10 +1,7 @@
 package com.example.bb.frontend.Settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +18,15 @@ import com.example.bb.frontend.navController
 @Composable
 fun AlertScreen(u: User) {
     Column() {
+        var budAlrt by remember { mutableStateOf(TextFieldValue(u.AlertSetting.budgetPercent.toString())) }
+        var carAlrt by remember { mutableStateOf(TextFieldValue(u.AlertSetting.categoryPercent.toString())) }
+
         Button(onClick = {
+            try {
+                u.AlertSetting.budgetPercent = budAlrt.text.toDouble()
+                u.AlertSetting.categoryPercent = carAlrt.text.toDouble()
+            } catch (e: java.lang.Exception) {}
+
             navController.navigate("setting")
         },
             modifier = Modifier
@@ -32,24 +37,37 @@ fun AlertScreen(u: User) {
                 contentColor = Color.Black
             )
         ){
-            Text("Back")
+            Text("Save & Exit")
         }
-        Text("Overall Budget Alert")
-        var text1 by remember { mutableStateOf(TextFieldValue("")) }
+
+        Text("Overall Budget Alert",
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 0.dp)
+                .height(20.dp),
+            fontWeight = FontWeight.Bold,
+            color = Color.White)
         TextField(
-            value = text1,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
+            value = budAlrt,
             onValueChange = { newText ->
-                text1 = newText
-            }
+                budAlrt = newText
+            },
+            colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, backgroundColor = Color.White)
         )
 
-        Text("Categorical Alert")
-        var text2 by remember { mutableStateOf(TextFieldValue("")) }
+        Text("Categorical Alert",
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 0.dp)
+                .height(20.dp),
+            fontWeight = FontWeight.Bold,
+            color = Color.White)
         TextField(
-            value = text2,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
+            value = carAlrt,
             onValueChange = { newText ->
-                text2 = newText
-            }
+                carAlrt = newText
+            },
+            colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, backgroundColor = Color.White)
         )
     }
 

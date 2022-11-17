@@ -16,12 +16,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.bb.DefaultPreview
 import com.example.bb.IncomeComponent
 import com.example.bb.R
+import com.example.bb.backend.User
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Preview
 @Composable
 fun BudgetScreen() {
     IncomeComponent()
+
+
 }
+
+
+@Composable
+fun CardBudget(u: User){
+
+}
+
+

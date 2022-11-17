@@ -1,0 +1,73 @@
+package com.example.bb.frontend
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.bb.backend.User
+
+sealed class NavigationLogin(var route: String, var title: String) {
+    // four main pages
+    object LoginPage : NavigationLogin("login", "Logged Out")
+    object MainPage : NavigationLogin("main", "Logged In")
+}
+
+lateinit var navLogin: NavHostController
+var currentUser = User.sample() // this should be changed in LoginScreen
+
+// just navigates between being logged in or not
+@Composable
+fun Login() {
+    navLogin = rememberNavController()
+
+    //start as logged out
+    NavHost(navLogin, startDestination = NavigationLogin.LoginPage.route) {
+        // These are the 4 main pages
+        composable(NavigationLogin.LoginPage.route) {
+            LoginScreen()
+        }
+        composable(NavigationLogin.MainPage.route) {
+            MainScreen(currentUser)
+        }
+    }
+}
+
+
+//This is the login page. Change this to actually do stuff
+@Composable
+fun LoginScreen() {
+    Button(
+        onClick = {
+            navLogin.navigate("main")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .height(50.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.White,
+            contentColor = Color.Black
+        )
+    ) {
+        Text("Log In")
+    }
+
+    //add a spinner to select a user. show by name of user
+    //add a textfield to enter password
+    //   if correct log in
+    // make it look good enough
+    // add a dummy button for new user
+    //   it won't do anything
+}
