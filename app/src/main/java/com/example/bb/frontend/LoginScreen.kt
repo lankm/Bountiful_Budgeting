@@ -72,6 +72,7 @@ fun LoginScreen() {
         //************************************************
         Column(modifier = Modifier.fillMaxWidth()) {
             //just spacing lol
+            // USE SPACER(modifier = Modifier.height)
             Text("", modifier = Modifier.height(50.dp))
             //******
             Text(

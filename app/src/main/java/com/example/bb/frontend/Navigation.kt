@@ -2,37 +2,27 @@ package com.example.bb.frontend
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.bb.R
 import com.example.bb.backend.User
-//import com.example.bb.frontend.Settings.AddEditScreen
-import com.example.bb.frontend.Settings.AlertScreen
+import com.example.bb.frontend.Components.AddEditBudgetScreen
+//import com.example.bb.frontend.Settings.AlertScreen
 import com.example.bb.frontend.Settings.SettingScreen
 
 sealed class NavigationItem(var route: String, var icon : ImageVector, var title: String) {
@@ -42,6 +32,7 @@ sealed class NavigationItem(var route: String, var icon : ImageVector, var title
     object Settings : NavigationItem("setting", Icons.Rounded.Settings, "Settings")
 
     object AlertSettings : NavigationItem("alert", Icons.Rounded.Settings, "Alert")
+    object AddBudgetScreen : NavigationItem("addBudget", Icons.Rounded.Add, "AddBudget")
 }
 
 @Composable
@@ -89,6 +80,9 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
+
+
+
 lateinit var navController: NavHostController
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -96,34 +90,7 @@ fun MainScreen(u: User) {
     navController = rememberNavController()
 
     Scaffold(
-        topBar = { TopAppBar(
-            backgroundColor = Color(0,140,0),
-            contentColor = Color.White)
-        {
-            
-            Row() {
-                Text(
-                    text = "Bountiful Budgeting",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                
-                Spacer(modifier = Modifier.width(16.dp))
-
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Search Task",
-                        tint = Color.Black
-                    )
-                }
-                
-                //(imageVector = Icons.Filled.Add , contentDescription = "Add String")
-                
-                
-            }
-        }},
+        topBar = { DefaultListAppBar(){ navController.navigate("addBudget")} },
         bottomBar = { BottomNavigationBar(navController) },
         content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
             Box(modifier = Modifier.padding(padding)) {
@@ -155,12 +122,56 @@ fun Navigation(navController: NavHostController, u: User) {
             AlertScreen(u)
         }
 
-        // ADD - EDIT BUDGET
-        //AddEditScreen doesn't exist
-        //composable(NavigationItem.AlertSettings.route) {
-        //    AddEditScreen(u)
-        //}
+        composable(NavigationItem.AddBudgetScreen.route) {
+            AddBudgets(u)
+        }
+
+    }
+}
 
 
+
+
+
+@Composable
+fun DefaultListAppBar(
+    onAddClicked: () -> Unit){
+    TopAppBar(
+
+        backgroundColor = Color.White,
+
+        ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "List", color = Color.White)
+            Spacer(modifier = Modifier.width(300.dp))
+            ListAppBarActions( onAddClicked = onAddClicked)
+
+        }
+
+    }
+}
+
+@Composable
+fun ListAppBarActions(
+    onAddClicked:()  -> Unit
+){
+
+   AddAction(onAddClicked = onAddClicked)
+
+}
+
+@Composable
+fun AddAction(
+    onAddClicked:()  -> Unit
+){
+    IconButton(onClick = { onAddClicked() }) {
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = "Add Button",
+            tint = Color.Black
+        )
     }
 }

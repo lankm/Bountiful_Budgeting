@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
@@ -38,41 +36,60 @@ import com.example.bb.backend.Expense
 import com.example.bb.backend.User
 import com.example.bb.frontend.NavigationItem
 import com.example.bb.frontend.navController
-import com.example.bb.frontend.navLogin
 
 @Composable
 fun SettingScreen(u: User) {
+    val listState = rememberLazyListState()
+    val options = getOptions()
 
-    Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
+    LazyColumn(
+        state = listState
     ) {
-        Button( onClick = {
-            navController.navigate("alert")
-        },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = White,
-                contentColor = Black
-            )
-        ){
-            Text("Alert Settings")
+        items(options) { opt ->
+            Option.displayButton(opt.name, opt.location, u)
         }
-        Button( onClick = {
-            navLogin.navigate("login")
-        },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = White,
-                contentColor = Black
-            )
-        ){
-            Text("Log Out")
+    }
+}
+
+fun getOptions(): List<Option> {
+    var options = ArrayList<Option>()
+
+    options.add(Option("Alert Settings", 0))
+    //add more if needed here.
+    //make sure i is defined in the companion object
+
+    return options
+}
+
+class Option {
+    var name = ""
+    var location = -1
+
+    constructor(name: String, i: Int) {
+        this.name = name
+        location = i
+    }
+
+    //defines where each button goes
+    companion object {
+        @Composable
+        fun displayButton(name: String, i: Int, u: User) {
+            Button( onClick = {
+                    if(i == 0)
+                        navController.navigate("alert")
+                    else if(i == 1){}
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = White,
+                    contentColor = Black
+                )
+            ){
+                Text(name)
+            }
         }
     }
 }

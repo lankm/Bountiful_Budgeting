@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.bb.backend.User
 import com.example.bb.frontend.navController
+import androidx.compose.material.TextField as TextField
 
 @Composable
 fun AlertScreen(u: User) {
@@ -46,6 +47,8 @@ fun AlertScreen(u: User) {
                 .height(20.dp),
             fontWeight = FontWeight.Bold,
             color = Color.White)
+
+
         TextField(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
             value = budAlrt,

@@ -12,6 +12,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AttachMoney
+import androidx.compose.material.icons.rounded.MonetizationOn
 import androidx.compose.material.icons.rounded.Money
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -88,7 +90,41 @@ fun InputField(
         value = valueState.value, //Whatever VALUE IS INPUTTED
         onValueChange = { valueState.value = it },
         label = { Text(text = labelId) },
-        leadingIcon = { Icon(imageVector = Icons.Rounded.Money, contentDescription = "MoneyIcon") },
+        leadingIcon = { Icon(imageVector = Icons.Rounded.AttachMoney, contentDescription = "MoneyIcon") },
+        singleLine = isSingleLine,
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colors.onBackground
+        ),
+        modifier = modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
+            .fillMaxWidth(),
+        enabled = enabled,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
+        keyboardActions = onAction
+    ) // IS PASSED TO THE VALUE STATE
+
+}
+
+// TO INPUT NUMBERS
+@Composable
+fun InputFieldText(
+    modifier: Modifier = Modifier,
+    valueState: MutableState<String>,
+    labelId: String,
+    enabled: Boolean,
+    isSingleLine: Boolean,
+    keyboardType: KeyboardType = KeyboardType.Text, //INPOT NBUMBER ONLY
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: KeyboardActions = KeyboardActions.Default
+) {
+    OutlinedTextField(
+        value = valueState.value, //Whatever VALUE IS INPUTTED
+        onValueChange = { valueState.value = it },
+        label = { Text(text = labelId) },
+        leadingIcon = { Icon(imageVector = Icons.Rounded.MonetizationOn, contentDescription = "MoneyIcon") },
         singleLine = isSingleLine,
         textStyle = TextStyle(
             fontSize = 18.sp,

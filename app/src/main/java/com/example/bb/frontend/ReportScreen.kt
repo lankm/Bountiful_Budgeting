@@ -78,7 +78,7 @@ fun ReportScreen(u: User) {
                 //generate report and save to text
                 //consider changing return value of 'make report' to a string, so you can combine these lines
                 //testBudgetArray[0].generateReport()
-                text = testBudgetArray[0].reports[u.budgets[0].reports.lastIndex].print()
+                //text = testBudgetArray[0].reports[u.budgets[0].reports.lastIndex].print()
                 showReport = true
             }
         }){
@@ -96,7 +96,7 @@ fun ReportScreen(u: User) {
                     //generate report and save to text
                     //consider changing return value of 'make report' to a string, so you can combine these lines
                     //testBudgetArray[0].generateReport()
-                    reportText = testReportArray[0].print()
+                    //reportText = testReportArray[0].print()
                     showReport = true
                 }
             }){
