@@ -7,6 +7,7 @@ class User {
     var logged_in = false
     var budgets = ArrayList<Budget>()
     var reports = ArrayList<Report>()
+    var alertSetting = AlertSetting()
 
     // constructors
     constructor(name: String, password: String) {

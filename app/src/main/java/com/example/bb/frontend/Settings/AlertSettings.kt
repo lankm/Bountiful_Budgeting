@@ -19,13 +19,13 @@ import androidx.compose.material.TextField as TextField
 @Composable
 fun AlertScreen(u: User) {
     Column() {
-        var budAlrt by remember { mutableStateOf(TextFieldValue(u.AlertSetting.budgetPercent.toString())) }
-        var carAlrt by remember { mutableStateOf(TextFieldValue(u.AlertSetting.categoryPercent.toString())) }
+        var budAlrt by remember { mutableStateOf(TextFieldValue(u.alertSetting.budgetPercent.toString())) }
+        var carAlrt by remember { mutableStateOf(TextFieldValue(u.alertSetting.categoryPercent.toString())) }
 
         Button(onClick = {
             try {
-                u.AlertSetting.budgetPercent = budAlrt.text.toDouble()
-                u.AlertSetting.categoryPercent = carAlrt.text.toDouble()
+                u.alertSetting.budgetPercent = budAlrt.text.toDouble()
+                u.alertSetting.categoryPercent = carAlrt.text.toDouble()
             } catch (e: java.lang.Exception) {}
 
             navController.navigate("setting")

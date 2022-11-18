@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bb.backend.User
 import com.example.bb.frontend.Components.AddEditBudgetScreen
+import com.example.bb.frontend.Settings.AlertScreen
 //import com.example.bb.frontend.Settings.AlertScreen
 import com.example.bb.frontend.Settings.SettingScreen
 
