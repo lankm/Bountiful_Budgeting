@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.RestoreFromTrash
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -19,17 +20,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.bb.backend.Budget
 import com.example.bb.backend.Category
 import com.example.bb.backend.Expense
 import com.example.bb.backend.User
 import com.example.bb.frontend.Components.InputField
 import com.example.bb.frontend.Components.InputFieldText
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.math.exp
 
 //Holding data
 data class OutputClass(
@@ -49,8 +46,8 @@ var expensevalueMoney: String? = null
 // all this pain could of been done by a Database ;-;
 
 
-var expenseArray = ArrayList<Expense>()
-var indexValue = 0
+
+var indexValue:Int = 0
 
 @Preview
 @Composable
@@ -73,6 +70,10 @@ fun Preview(){
 fun AddBudgets(u:User){
     val outputClass = OutputClass(categoryname,categoryvalueMoney,expensename,expensevalueMoney)
 
+
+    val list = remember {
+        mutableStateListOf<Expense>()
+    }
 
     val valueName = remember{
         mutableStateOf("")
@@ -142,16 +143,17 @@ fun AddBudgets(u:User){
                     color = Color(0xFF959595),
                     thickness = 1.dp)
 
+
+
                 Spacer(modifier = Modifier.width(10.dp))
                 LazyColumn {
                     // Add a single item
 
+                    // Add 4 items
 
-                    // Add 5 items
-                    items(numTest.value) { index ->
-
-                        Text(text = "Item: $index")
-                        ExpenseCard(indexValue,outputClass,valueExpense,valueExpenseAmount,validState,keyboardController){
+                    //Test for now
+                    items(numTest.value) {index->
+                        ExpenseCard(list,index,outputClass,valueExpense,valueExpenseAmount,validState,keyboardController){
 
 
                         }
@@ -166,18 +168,13 @@ fun AddBudgets(u:User){
                 Spacer(modifier = Modifier.height(16.dp))
 Row() {
     FinishButton(){
-        CreateCategory(categoryname!!, categoryvalueMoney!!.toDouble() )
-
-
         navController.popBackStack()
 
     }
 Spacer(modifier = Modifier.width(16.dp))
     ExpenseAddButton(onClick = {
-        expenseArray.add(Expense("",0.0))
-        indexValue++
+       numTest.value++
 
-        numTest.value++
     })
 }
             }
@@ -190,7 +187,12 @@ Spacer(modifier = Modifier.width(16.dp))
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ExpenseCard( indexValue:Int ,outputClass:OutputClass,valueExpense: MutableState<String>,valueExpenseAmount: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onClick: () -> Unit){
+fun ExpenseCard(list: SnapshotStateList<Expense>,
+                indexValue:Int,
+                outputClass:OutputClass,
+                valueExpense: MutableState<String>,
+                valueExpenseAmount: MutableState<String>,
+                validState:Boolean, keyboardController: SoftwareKeyboardController?, onClick: () -> Unit){
 
 
 
@@ -206,11 +208,13 @@ fun ExpenseCard( indexValue:Int ,outputClass:OutputClass,valueExpense: MutableSt
         Box(modifier = Modifier.width(150.dp)) {
             AddExpense(valueExpenseAmount,validState,keyboardController, onValChange = {})
         }
+
+
         DeleteButton(){
-            //expenseArray.removeAt(indexValue)
+
+
+
         }
-
-
 
 
     }

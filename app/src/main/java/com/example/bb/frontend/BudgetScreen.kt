@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.bb.backend.*
 import com.example.bb.frontend.Components.Boxes
 import com.example.bb.ui.theme.*
@@ -49,9 +50,8 @@ fun TestClassesDelLater(){
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Preview
 @Composable
-fun BudgetScreen() {
+fun BudgetScreen(navController: NavController) {
     //SELECTED FUNCTION NOT MADE YET, MAYBE IF WE GET TIME\
     // val colorPick = mutableListOf()
 
@@ -67,7 +67,7 @@ fun BudgetScreen() {
     
     MainContent {
         IncomeComponent(u[0])
-        ColumnManager(categoryList[0])
+        ColumnManager(categoryList[0], navController)
         Spacer(modifier = Modifier.height(10.dp))
 
 
@@ -253,7 +253,7 @@ fun MainContent(content: @Composable () -> Unit){
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ColumnManager(budgetCategoryView: ArrayList<Category>) {
+fun ColumnManager(budgetCategoryView: ArrayList<Category>, navController: NavController) {
     var num = 0
 
     Column(
@@ -267,7 +267,7 @@ fun ColumnManager(budgetCategoryView: ArrayList<Category>) {
 
             items(budgetCategoryView){ index ->
                 //Boxes(index)
-                Boxes(index, onItemClick = {})
+                Boxes(index,navController, onItemClick = {})
                 Log.d("TAG", "ColumnManager: ${index}")
             }
         }

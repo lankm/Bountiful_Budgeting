@@ -100,6 +100,10 @@ fun MainScreen(u: User) {
         },
         backgroundColor = Color(50,100,50) // Set background color to avoid the white flashing when you switch between screens
     )
+
+
+
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -107,7 +111,7 @@ fun MainScreen(u: User) {
 fun Navigation(navController: NavHostController, u: User) {
     NavHost(navController, startDestination = NavigationItem.Budget.route) {
         composable(NavigationItem.Budget.route) {
-            BudgetScreen()
+            BudgetScreen(navController)
         }
         composable(NavigationItem.Calendar.route) {
             CalendarScreen(u)
@@ -125,6 +129,10 @@ fun Navigation(navController: NavHostController, u: User) {
 
         composable(NavigationItem.AddBudgetScreen.route) {
             AddBudgets(u)
+        }
+
+        composable("edit_screen") {
+            EditScreen(u)
         }
 
     }
