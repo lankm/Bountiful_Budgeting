@@ -43,7 +43,7 @@ class User {
     // aka static
     companion object {
         fun sample(): User {
-            val u = User("Landon Moon", "password")
+            val u = User("Landon Moon", "")
             val b = Budget.sample()
 
             u.addBudget(b)

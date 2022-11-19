@@ -1,15 +1,20 @@
 package com.example.bb.frontend
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
 import android.os.Build
 import android.util.Log
 
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,36 +22,29 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 
 import androidx.compose.material.icons.rounded.Money
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bb.backend.*
+import com.example.bb.frontend.Components.Boxes
+import com.example.bb.ui.theme.*
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-
-
-
-
-
 fun TestClassesDelLater(){
 
-    Log.d("TAG", "TestClassesDelLater:ccccccc ${ Budget.sample().categories} + ${Budget.sample().getExpenses()}")
-    Log.d("TAG", "TestClassesDelLater:vvvvvvv ${expenseToBudget} ")
-    Log.d("TAG", "TestClassesDelLater:bbbbbbb ${ getExpense} ")
-    Log.d("TAG", "TestClassesDelLater:aaaaaaa ${ Category.sample()} ")
+
 }
 
 
@@ -54,9 +52,24 @@ fun TestClassesDelLater(){
 @Preview
 @Composable
 fun BudgetScreen() {
+    //SELECTED FUNCTION NOT MADE YET, MAYBE IF WE GET TIME\
+    // val colorPick = mutableListOf()
+
+    var u = User.users()
+    var selectedBudget by remember{ mutableStateOf(0)}
+    var categoryList = mutableListOf( u[0].budgets[selectedBudget].categories )
+
+
+    //TOP IS FOR TESTING
+    
+    
+    var b = currentUser
     
     MainContent {
-        IncomeComponent()
+        IncomeComponent(u[0])
+        ColumnManager(categoryList[0])
+        Spacer(modifier = Modifier.height(10.dp))
+
 
 
 
@@ -69,128 +82,21 @@ fun BudgetScreen() {
 
 
 
+
+
+
+
+
+
+
 @Composable
-fun TestView(user: User){
-    var budgetCard = user.budgets
-    var budgetExpense = user.reports
-
-
-
-    Surface() {
-        for (x in budgetCard){
-            Text(text = "$budgetCard" )
-        }
-        for (x in budgetExpense){
-            Text(text = "$budgetExpense" )
-        }
-
-
-    }
-
+fun ColorAction(
+    onValueChange : () -> Unit,
+    onclicked: (ColorsChoices) -> Unit
+){
+    ColorPickerPopUp(onValueChange = onValueChange ,onColorClicked = onclicked)
 }
 
-
-
-
-
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Boxes(num:Int,budgetCategory: ArrayList<Category>) {
-    //default values for testing function is moving to another package
-    val expandedState  = remember{
-        mutableStateOf(false)
-    }
-
-    var expandNum = remember {
-        mutableStateOf(60.dp)
-    }
-
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-
-            .fillMaxWidth()
-            .combinedClickable(
-                onClick = {
-                    expandedState.value = !expandedState.value
-                    //EXPAND WINDOW
-                },
-                onLongClick = {
-                    //POP UP WINDOWS TO EDIT
-                },
-            ),
-
-
-
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-        elevation = 6.dp
-    ) {
-
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            if (!expandedState.value) {
-                Surface(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .padding(12.dp),
-                    elevation = 5.dp
-                ) {
-                    Card(
-                        modifier = Modifier.clickable {
-
-                        },
-                        backgroundColor = Color.Red,
-                        shape = CircleShape
-                    ) {
-
-                    }
-
-                }
-
-                Text(text = "${budgetCategory[num].name}")
-                Spacer(modifier = Modifier.width(150.dp))
-                Text(text = "$${budgetCategory[num].cap}")
-                Spacer(modifier = Modifier.height(20.dp))
-
-
-
-
-
-
-
-            }else{
-                //fades out
-
-                Surface(
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(12.dp),
-                    elevation = 5.dp
-                ) {
-                    Column() {
-                               //ExpensesShow( num,getExpenses)
-
-                        }
-                    }
-                }
-
-            }
-
-
-        }
-
-
-
-    }
-
-
-
-    
 
 
 
@@ -206,7 +112,7 @@ fun ExpensesShow(num: Int, budgetCategory: ArrayList<Expense> ){
             Spacer(modifier = Modifier.width(60.dp))
             Text(text = "${budgetCategory[number].cost}")
         }
-        number--
+
     }
 
 
@@ -220,7 +126,10 @@ fun ExpensesShow(num: Int, budgetCategory: ArrayList<Expense> ){
 //@Preview(showBackground = true)
 @Composable
 
-fun IncomeComponent () { //THIS COMPOSABLE IS GOING TO MOVE LOCATIONS //Proper NAME CHANGE LATER
+fun IncomeComponent (u:User) { //THIS COMPOSABLE IS GOING TO MOVE LOCATIONS //Proper NAME CHANGE LATER
+    
+
+    
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -342,9 +251,10 @@ fun MainContent(content: @Composable () -> Unit){
 
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ColumnManager(budgetCategoryView: ArrayList<Category>) {
-    var num = budgetCategoryView.size
+    var num = 0
 
     Column(
         modifier = Modifier.padding(12.dp)
@@ -352,7 +262,17 @@ fun ColumnManager(budgetCategoryView: ArrayList<Category>) {
 
 
 
-               //Boxes(num,getCategor)
+
+        LazyColumn{
+
+            items(budgetCategoryView){ index ->
+                //Boxes(index)
+                Boxes(index, onItemClick = {})
+                Log.d("TAG", "ColumnManager: ${index}")
+            }
+        }
+
+        
 
            }
 

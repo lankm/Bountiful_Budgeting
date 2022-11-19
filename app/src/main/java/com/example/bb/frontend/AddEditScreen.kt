@@ -29,6 +29,7 @@ import com.example.bb.backend.User
 import com.example.bb.frontend.Components.InputField
 import com.example.bb.frontend.Components.InputFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlin.math.exp
 
 //Holding data
 data class OutputClass(
@@ -48,42 +49,8 @@ var expensevalueMoney: String? = null
 // all this pain could of been done by a Database ;-;
 
 
-//var categorySet =Category(categoryname.,categoryvalueMoney.toDouble())
-var categorySet = categoryvalueMoney?.let { Category(categoryname.toString(), it.toDouble()) }
-
-//var expenseSet = Expense(expensename.toString(),expensevalueMoney.toDouble())
-var expenseSet = expensevalueMoney?.let { Expense(expensename.toString(), it.toDouble()) }
-
-var userStart = User.sample()
-
-//this is set as sample for now maybe we can implement a DATABASE???
-var budgetSet = Budget.sample()
-
-var getExpense = Budget.sample().getExpenses()
-
-//var expenseToBudget = Budget.sample().addExpense(expenseSet)
-var expenseToBudget = expenseSet?.let { Budget.sample().addExpense(it) }
-
-//var categoriestoBudget  = budgetSet.categories.add(categorySet)
-var categoriestoBudget  = categorySet?.let { budgetSet.categories.add(it) }
-
-//var userToBudget = userStart.addBudget(expenseToBudget)
-var userToBudget = userStart.addBudget(budgetSet)
-
-
-
-//var getCategory = budgetSet.categories
-//
-//var getExpenses = budgetSet.Subs
-
-
-//// this crashed the app and IDK WHY??????
-//var getCategoryBetter = budgetSet.showCategories()
-//var getExpensesBetter = budgetSet.getExpenses()
-//
-//var testValue = Expense.sample().category.bud
-//
-
+var expenseArray = ArrayList<Expense>()
+var indexValue = 0
 
 @Preview
 @Composable
@@ -104,15 +71,6 @@ fun Preview(){
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddBudgets(u:User){
-
-    userStart
-    budgetSet
-    categorySet
-    expenseToBudget
-    categoriestoBudget
-    userToBudget
-
-
     val outputClass = OutputClass(categoryname,categoryvalueMoney,expensename,expensevalueMoney)
 
 
@@ -129,13 +87,13 @@ fun AddBudgets(u:User){
     val valueExpense = remember{
         mutableStateOf("")
     }
-    expensevalueMoney = valueExpense.value
+
 
     val valueExpenseAmount = remember{
         mutableStateOf("")
     }
 
-     categoryname= valueExpenseAmount.value
+
     //todo: sucks
     val validState = remember(valueName.value) {
         valueName.value.trim().isNotEmpty()
@@ -174,11 +132,6 @@ fun AddBudgets(u:User){
                             })
                         }
 
-//                        // R - TEST LOGIC
-//                        budgetSet
-//                        categoriestoBudget  = categorySet?.let { budgetSet.categories.add(it) }
-//                        categorySet = categoryvalueMoney?.let { Category(categoryname.toString(), it.toDouble()) }
-//                        userToBudget
 
 
                     }
@@ -198,13 +151,12 @@ fun AddBudgets(u:User){
                     items(numTest.value) { index ->
 
                         Text(text = "Item: $index")
-                        ExpenseCard(outputClass,valueExpense,valueExpenseAmount,validState,keyboardController){
-                            Category
+                        ExpenseCard(indexValue,outputClass,valueExpense,valueExpenseAmount,validState,keyboardController){
+
+
                         }
-                           // numTest.remove(index)
-                        expenseSet
-                        expenseToBudget
-                        budgetSet
+
+
                     }
 
                 }
@@ -214,29 +166,23 @@ fun AddBudgets(u:User){
                 Spacer(modifier = Modifier.height(16.dp))
 Row() {
     FinishButton(){
-        TestClassesDelLater()
+        CreateCategory(categoryname!!, categoryvalueMoney!!.toDouble() )
+
+
         navController.popBackStack()
 
     }
 Spacer(modifier = Modifier.width(16.dp))
     ExpenseAddButton(onClick = {
+        expenseArray.add(Expense("",0.0))
+        indexValue++
 
         numTest.value++
     })
 }
-
-
             }
-
-
         }
-
     }
-
-
-
-
-
 }
 
 
@@ -244,7 +190,7 @@ Spacer(modifier = Modifier.width(16.dp))
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ExpenseCard( outputClass:OutputClass,valueExpense: MutableState<String>,valueExpenseAmount: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onClick: () -> Unit){
+fun ExpenseCard( indexValue:Int ,outputClass:OutputClass,valueExpense: MutableState<String>,valueExpenseAmount: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onClick: () -> Unit){
 
 
 
@@ -254,17 +200,21 @@ fun ExpenseCard( outputClass:OutputClass,valueExpense: MutableState<String>,valu
 }
     Row() {
         Box(modifier = Modifier.width(200.dp)) {
-            AddExpenseName(outputClass,valueExpense,validState,keyboardController, onValChange = {})
+            AddExpenseName(valueExpense,validState,keyboardController, onValChange = {})
         }
 
         Box(modifier = Modifier.width(150.dp)) {
-            AddExpense(outputClass,valueExpenseAmount,validState,keyboardController, onValChange = {})
+            AddExpense(valueExpenseAmount,validState,keyboardController, onValChange = {})
         }
-        DeleteButton(onClick = onClick)
+        DeleteButton(){
+            //expenseArray.removeAt(indexValue)
+        }
+
+
+
 
     }
-    expenseSet
-    expenseToBudget = expenseSet?.let { Budget.sample().addExpense(it) }
+
 
 }
 
@@ -326,11 +276,12 @@ fun AddCategoryNum(moneyCap: OutputClass,value: MutableState<String>,validState 
 
 }
 
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddExpenseName(expensename: OutputClass ,value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}){
+fun AddExpenseName(value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}){
 
-   expensename.expensename= value.value
+
 
 
     InputFieldText(
@@ -349,13 +300,15 @@ fun AddExpenseName(expensename: OutputClass ,value: MutableState<String>,validSt
         }
     )
 
+
+
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddExpense(expensevalueMoney: OutputClass,value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}){
+fun AddExpense(value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}){
 
-    expensevalueMoney.expensevalueMoney=value.value
+
 
     InputField(
         valueState = value ,

@@ -1,52 +1,72 @@
 package com.example.bb.frontend
 
-import android.util.Log
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.bb.backend.Budget
+import com.example.bb.backend.Category
+import com.example.bb.backend.Expense
+import com.example.bb.backend.User
+
+
+@Preview
+@Composable
+fun WhichUser(){
+    var u = User.users()
+    var userSelected = u[0]
+    ShowBudgetFromUser(u[0])
+    AddBudgetForUserSpec( userSelected, 0,"random" , 151.02 )
+    Column() {
+
+        Text(text = "${u[0].budgets[0].categories.last()}")
+    }
+}
+
+
+@Composable
+fun ShowBudgetFromUser(u: User){
+
+
+}
+
+
+@Composable
+fun getCategoriesFromUser(){
+
+}
+
+
+@Composable
+fun AddBudgetForUserSpec(u:User,budgetSelected: Int,nameCategory: String,capIncome: Double ){
+    u.budgets[budgetSelected].categories.add(Category(nameCategory,capIncome))
+    u.budgets[budgetSelected].categories.last()
+
+    testAddExpenseForCategoryCreated(u.budgets[budgetSelected].categories.last(),CreateExpense("test", 51.6))
+}
+
+
+@Composable
+fun AddExpensesForCategoryCreated(category: Category,expenseCreatedArray: ArrayList<Expense>){
+    //category.addExpense()
 
 
 
+}
+
+@Composable
+fun testAddExpenseForCategoryCreated(category: Category,expense: Expense){
+    //category.addExpense()
 
 
 
-//val budgetClass = Budget.sample() //placeholder because no DB ;-;
-//val expenseClass = expensename?.let { expensevalueMoney?.let { it1 -> Expense(it, it1.toDouble()) } } //lmao idk
-//val categoryClass = categoryname?.let { categoryvalueMoney?.let { it1 ->
-//    Category(it,
-//        it1.toDouble())
-//} }
-//val user = User.sample().addBudget(budgetClass)
-//
-//@Preview()
-//@Composable
-//fun TestRun(){
-//
-//    user
-//    if (categoryClass != null) {
-//        budgetClass.addCategory(categoryClass)
-//    }
-//    if (expenseClass != null) {
-//        if (categoryClass != null) {
-//            categoryClass.addExpense(expenseClass)
-//        }
-//    }
-//    expenseClass
+}
+
+fun CreateCategory(nameCategory: String, capIncome: Double):Category{
+    return Category(nameCategory,capIncome)
+}
 
 
-
-// TEST FILE WE CAN DELETE THIS LATER
-//
-//Column {
-//    Text(text = expenseClass.toString())
-//    categoryClass?.let { Text(text = it.showAll()) }
-//    Text(text = budgetClass.showAll())
-//    Divider(modifier = Modifier.width(16.dp) , Color.Black)
-//
-//
-//    for( x in budgetClass.categories){
-//        Text(text = "$x")
-//    }
-////    Text(text = User.sample().showBudgets())
-////    Text(text = User.sample().makeReport(budgetClass))
-//}
-//
-
-//}
+fun CreateExpense(nameExpense: String, cost : Double): Expense{
+   return Expense(nameExpense, cost)
+}
