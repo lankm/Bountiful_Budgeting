@@ -1,6 +1,9 @@
 package com.example.bb.backend
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.bb.*
+import kotlinx.parcelize.Parcelize
 import java.io.*
 import java.util.*
 import java.util.concurrent.Flow.Subscription
@@ -85,6 +88,7 @@ open class Budget {
     fun alertNeeded(AS: AlertSetting) : Boolean {
         return total()/income >= (1-AS.budgetPercent)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     fun generateReport() : Report {
         var r = Report(this)
 
@@ -143,6 +147,7 @@ open class Budget {
 
     // aka static
     companion object {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun sample(): Budget {
             val bud = Budget("Sample Budget", 2400.00)
             val cat1 = Category("Living Expenses", 700.00)

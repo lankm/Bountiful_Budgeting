@@ -1,11 +1,16 @@
 package com.example.bb.backend
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+
 class User {
     // variables
     var name = ""
     var password = "" // its cool to be unsecure
     var logged_in = false
     var budgets = ArrayList<Budget>()
+    var activeBud = 0
+
     var reports = ArrayList<Report>()
     var alertSetting = AlertSetting()
 
@@ -78,6 +83,7 @@ class User {
     }
 
     //generate report
+    @RequiresApi(Build.VERSION_CODES.O)
     fun makeReport(b: Budget): String{
         reports.add(Report(b))
 

@@ -16,12 +16,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.bb.backend.User
-import com.example.bb.frontend.Components.AddEditBudgetScreen
 import com.example.bb.frontend.Settings.AlertScreen
 //import com.example.bb.frontend.Settings.AlertScreen
 import com.example.bb.frontend.Settings.SettingScreen
@@ -111,7 +112,8 @@ fun MainScreen(u: User) {
 fun Navigation(navController: NavHostController, u: User) {
     NavHost(navController, startDestination = NavigationItem.Budget.route) {
         composable(NavigationItem.Budget.route) {
-            BudgetScreen(navController)
+            bool= true
+            BudgetScreen(navController, bucketViewModel)
         }
         composable(NavigationItem.Calendar.route) {
             CalendarScreen(u)
@@ -131,8 +133,14 @@ fun Navigation(navController: NavHostController, u: User) {
             AddBudgets(u)
         }
 
-        composable("edit_screen") {
-            EditScreen(u)
+        //passing index to find data
+        //allows us to edit too
+        //if -1 = NEW_PAGE
+        composable("edit_screen/{index}", arguments = listOf(navArgument("index")
+        {type = NavType.IntType})) {
+            backStackEntry ->
+            bool= true
+            EditScreen(u , navController, bucketViewModel, backStackEntry.arguments?.getInt("index"))
         }
 
     }

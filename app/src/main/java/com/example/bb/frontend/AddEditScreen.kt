@@ -1,7 +1,6 @@
 package com.example.bb.frontend
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +21,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.bb.backend.Category
 import com.example.bb.backend.Expense
 import com.example.bb.backend.User
 import com.example.bb.frontend.Components.InputField
@@ -119,18 +117,18 @@ fun AddBudgets(u:User){
                     Row() {
                         Box(modifier = Modifier.width(200.dp)) {
 
-                            AddCategoryName(outputClass,valueName,validState,keyboardController, onValChange = {
+                            AddCategoryName(outputClass,valueName,validState,keyboardController) {
 
 
-                            })
+                            }
 
 
                         }
 
                         Box(modifier = Modifier.width(150.dp)) {
-                            AddCategoryNum(outputClass,valueCap,validState,keyboardController, onValChange = {
+                            AddCategoryNum(outputClass,valueCap,validState,keyboardController) {
 
-                            })
+                            }
                         }
 
 
@@ -227,9 +225,9 @@ fun ExpenseCard(list: SnapshotStateList<Expense>,
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddCategoryName(nameCategory :OutputClass,value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}) {
+fun AddCategoryName(outputClass:OutputClass,value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}) {
 
-    nameCategory.categoryname = value.value
+
 
 
 
@@ -255,15 +253,17 @@ fun AddCategoryName(nameCategory :OutputClass,value: MutableState<String>,validS
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddCategoryNum(moneyCap: OutputClass,value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}){
+fun AddCategoryNum(outputClass:OutputClass, value: MutableState<String>,validState :Boolean, keyboardController: SoftwareKeyboardController?, onValChange: (String) -> Unit = {}) {
 
-    moneyCap.categoryvalueMoney = value.value
 
-    InputField(
+
+
+
+    InputFieldText(
         valueState = value ,
-        labelId = "Category Cap", //Enter Amount
+        labelId = "Category Name", //Enter Amount
         enabled = true ,
-        isSingleLine = false,
+        isSingleLine = true,
         onAction = KeyboardActions{
             if(!validState) return@KeyboardActions
 
@@ -277,9 +277,7 @@ fun AddCategoryNum(moneyCap: OutputClass,value: MutableState<String>,validState 
 
 
 
-
 }
-
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

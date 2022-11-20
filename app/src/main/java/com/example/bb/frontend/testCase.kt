@@ -4,11 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.bb.backend.Budget
 import com.example.bb.backend.Category
 import com.example.bb.backend.Expense
 import com.example.bb.backend.User
-
 
 @Preview
 @Composable
