@@ -2,12 +2,14 @@
 package com.example.bb.frontend
 
 import android.graphics.Color
+import android.graphics.fonts.FontFamily
+import android.os.Build
 import android.util.Size
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle.Companion.Default
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,17 +40,24 @@ import com.example.bb.backend.*
 import androidx.compose.ui.window.PopupProperties
 import com.example.bb.MainActivity
 import com.example.bb.R
+import java.time.format.TextStyle
 
 
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ReportScreen(u: User) {
     //remove this once we can grab the users data from anywhere
     var text:String by remember { mutableStateOf("Select a budget to generate a report")}
-    var reportText:String by remember{ mutableStateOf("")}
-    //holds the currently selected budget
-    val testBudgetArray = ArrayList<Budget>(1)
-    val testReportArray = ArrayList<Report>(1)
-    var showReport:Boolean by remember { mutableStateOf(false)}
+    var reportText: String by remember { mutableStateOf("Select a report to view")}
+
+    var budgetExpanded by remember { mutableStateOf(false) }
+    var reportExpanded by remember { mutableStateOf(false) }
+    var selectedBudgetText by remember { mutableStateOf(u.budgets[0].name) }
+    var selectedReportText by remember { mutableStateOf(u.budgets[0].reports[0].date) }
+    var currentBudget = u.budgets[0]
+    var currentReport = u.budgets[0].reports[0]
+
 
     val scrollState = rememberScrollState()
     Column(
@@ -66,127 +76,112 @@ fun ReportScreen(u: User) {
             fontSize = 20.sp
         )
 
-        //dropdown menu
-        BudgetSpinner(u.budgets,testBudgetArray)
-
-        //displays the report for the selected budget
-        Button(onClick = {
-            if(testBudgetArray.isEmpty()){
-                text = "No budget selected"
+        //select budget text
+        ExposedDropdownMenuBox(
+            expanded = budgetExpanded,
+            onExpandedChange = {
+                budgetExpanded = !budgetExpanded
             }
-            else {
-                //generate report and save to text
-                //consider changing return value of 'make report' to a string, so you can combine these lines
-                //testBudgetArray[0].generateReport()
-                //text = testBudgetArray[0].reports[u.budgets[0].reports.lastIndex].print()
-                showReport = true
+        ) {
+            TextField(
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
+                readOnly = true,
+                value = selectedBudgetText,
+                onValueChange = { },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = budgetExpanded
+                    )
+                },
+                colors = TextFieldDefaults.textFieldColors(textColor = androidx.compose.ui.graphics.Color.Black, backgroundColor = androidx.compose.ui.graphics.Color.White)
+            )
+            ExposedDropdownMenu(
+                expanded = budgetExpanded,
+                onDismissRequest = {
+                    budgetExpanded = false
+                }
+            ) {
+                u.budgets.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        onClick = {
+                            currentBudget = selectionOption
+                            selectedBudgetText = selectionOption.name
+                            budgetExpanded = false
+                        }
+                    ) {
+                        Text(text = selectionOption.name)
+                    }
+                }
             }
-        }){
-            Text("Show Last Report")
         }
 
-        //dropdown for displaying old reports
-        if(showReport) {
-            ReportSpinner(u.budgets[0].reports, testReportArray, true)
-            Button(onClick = {
-                if(testReportArray.isEmpty()){
-                    reportText = "No Report selected"
-                }
-                else {
-                    //generate report and save to text
-                    //consider changing return value of 'make report' to a string, so you can combine these lines
-                    //testBudgetArray[0].generateReport()
-                    //reportText = testReportArray[0].print()
-                    showReport = true
-                }
-            }){
-                Text("Show Selected Report")
+        //select report
+        ExposedDropdownMenuBox(
+            expanded = reportExpanded,
+            onExpandedChange = {
+                reportExpanded = !reportExpanded
             }
+        ) {
+            TextField(
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
+                readOnly = true,
+                    value = selectedReportText,
+                onValueChange = { },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(
+                        expanded = reportExpanded
+                    )
+                },
+                colors = TextFieldDefaults.textFieldColors(textColor = androidx.compose.ui.graphics.Color.Black, backgroundColor = androidx.compose.ui.graphics.Color.White)
+            )
+            ExposedDropdownMenu(
+                expanded = reportExpanded,
+                onDismissRequest = {
+                    reportExpanded = false
+                }
+            ) {
+                currentBudget.reports.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        onClick = {
+                            currentReport = selectionOption
+                            selectedReportText = selectionOption.date
+                            reportText = selectionOption.makeReport()
+                            reportExpanded = false
+                        }
+                    ) {
+                        Text(text = selectionOption.date)
+                    }
+                }
+            }
+        }
+
+        //generate a report for current budget
+        Button(onClick = {
+            val generatedReport = Report(currentBudget)
+            currentBudget.reports.add(generatedReport)
+        }){
+            Text("Generate report for selected budget")
+        }
+
+        Box(
+            modifier = Modifier
+                .background(androidx.compose.ui.graphics.Color.White,
+                            shape = RoundedCornerShape(6.dp))
+                .align(Alignment.CenterHorizontally)
+                .padding(all = 10.dp)
+
+        ) {
             Text(
                 text = reportText,
-                fontWeight = FontWeight.Bold,
-                color = androidx.compose.ui.graphics.Color.White,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                //fontWeight = FontWeight.Bold,
+                color = androidx.compose.ui.graphics.Color.Black,
+                //modifier = Modifier.align(Alignment.CenterHorizontally),
                 textAlign = TextAlign.Start,
                 fontSize = 20.sp
             )
         }
-    }
 
-}
-
-
-@Composable
-fun ReportSpinner (reports: List<Report>, selectedReport: ArrayList<Report>, enable: Boolean) {
-    var reportText by remember {mutableStateOf("Select Report")}
-    var expanded by remember { mutableStateOf(false)}
-    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Row(
-            Modifier
-                .padding(24.dp)
-                .clickable {
-                    expanded = !expanded
-                }
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-
-        ) {
-            Text(text = reportText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
-            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
-            DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
-                reports.forEach {
-                        report: Report -> DropdownMenuItem(onClick = {
-                    expanded = false
-
-                    //if selectedReport has a budget in it, drop it
-                    if(selectedReport.isNotEmpty()) {
-                        selectedReport.clear()
-                    }
-                    reportText = report.date.toString()
-                    selectedReport.add(report)
-                }) {
-                    Text(text = report.date.toString())
-                }
-                }
-            }
-        }
     }
 }
-//dropdown menu
-@Composable
-fun BudgetSpinner (budgets: List<Budget>, selectedBudget: ArrayList<Budget>) {
-    var budgetText by remember {mutableStateOf("Select Budget")}
-    var expanded by remember { mutableStateOf(false)}
-    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Row(Modifier
-            .padding(24.dp)
-            .clickable {
-                expanded = !expanded
-            }
-            .padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = budgetText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
-            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
-            DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
-                budgets.forEach {
-                        budget: Budget -> DropdownMenuItem(onClick = {
-                    expanded = false
 
-                    //if selectedBudget has a budget in it, drop it
-                    if(selectedBudget.isNotEmpty()) {
-                        selectedBudget.clear()
-                    }
 
-                    budgetText = budget.name
-                    selectedBudget.add(budget)
-                }) {
-                    Text(text = budget.name)
-                }
-                }
-            }
-        }
-    }
-}

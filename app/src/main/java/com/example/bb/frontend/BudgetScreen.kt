@@ -155,7 +155,7 @@ fun IncomeComponent (u:User) { //THIS COMPOSABLE IS GOING TO MOVE LOCATIONS //Pr
                 MaterialTheme.typography.subtitle2
             )
             //Local Date Format better or change later
-            //ALL OF THIS IS GOING TO A FUNCTION LATER SOMWHERE ELSE
+            //ALL OF THIS IS GOING TO A FUNCTION LATER SOMEWHERE ELSE
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
             val formatted = current.format(formatter)
